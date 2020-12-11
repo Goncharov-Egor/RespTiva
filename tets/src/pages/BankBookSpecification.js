@@ -58,7 +58,11 @@ export default class BankBookSpecification extends Component {
     }
 
     addLand = (e) => {
+        this.props.history.push({pathname : '/AddLand/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName})
+    }
 
+    tmpbutton = (e) => {
+        this.props.history.push({pathname : '/GetLendTypesPath'})
     }
 
     render() {
@@ -73,6 +77,7 @@ export default class BankBookSpecification extends Component {
                     <h1>{this.props.match.params.bankBookName}</h1>
                 </Form>
                 <Form>
+                    <h2>-</h2>
                     <h2>Члены хозяйства</h2>
                     <ul className="list-group">
                         <button type="submit" className="btn btn-primary" onClick={e => this.addResidentButtonPressed(e)}>Добавить члена хозяйства</button>
@@ -95,6 +100,7 @@ export default class BankBookSpecification extends Component {
                     </ul>
                 </Form>
                 <Form>
+                    <h2>-</h2>
                     <h2>Земельные участки</h2>
                     <ul className="list-group">
                         <button type="submit" className="btn btn-primary" onClick={e => this.addLand(e)}>Добавить земельный участок</button>
@@ -103,11 +109,12 @@ export default class BankBookSpecification extends Component {
                                 return(<a href="#" className="list-group-item list-group-item-action"
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
-                                        <h5 className="mb-1">{index + 1} Кадастровый номер: {land.cadastralNumber}</h5>
-                                        <small>Имя создателя: {land.creatorName}</small>
-                                        <small>Категория: {land.landCategory}</small>
+                                        <h5 className="mb-1">Участок №{index + 1}. Кадастровый номер: {land.cadastralNumber}</h5>
+                                        <small><button type="submit" onClick={e => this.tmpbutton(e)} className="btn btn-outline-info" >Виды земель</button></small>
                                     </div>
                                     <p className="mb-1">Документ: {land.document}</p>
+                                    <p className="mb-1">Имя создателя: {land.creatorName}</p>
+                                    <p className="mb-1">Категория: {land.landCategory}</p>
                                     <small>Общая площадь: {land.totalArea}</small>
                                 </a>)
                                 // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>

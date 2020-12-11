@@ -51,7 +51,7 @@ export default class AddBankBook extends Component {
             residents: [{
                 birthDate: this.birthDate,
                 gender: this.gender,
-                name: this.name,
+                name: this.name1,
                 passport: {
                     issueDate: this.issueDate,
                     issuingAuthority: this.issuingAuthority,

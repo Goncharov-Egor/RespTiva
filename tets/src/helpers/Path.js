@@ -11,3 +11,6 @@ export let AddBankBooksPath = BasePath + "kozhuuns/household_books/bank_books/cr
 export let AddResidentPath = BasePath + "kozhuuns/household_books/bank_books/residents/add"
 export let GetResidentsPath = BasePath + "kozhuuns/household_books/bank_books/residents"
 export let GetLandsPath = BasePath + "kozhuuns/household_books/bank_books/lands"
+export let AddLandPath = BasePath + "kozhuuns/household_books/bank_books/lands/add"
+export let AddLandTypePath = BasePath + "kozhuuns/household_books/bank_books/land_types/add"
+export let GetLendTypesPath = BasePath + "land_types/"
