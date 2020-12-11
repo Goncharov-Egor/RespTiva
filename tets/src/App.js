@@ -9,6 +9,7 @@ import {UsersList} from "./pages/UsersList";
 import HouseholdBook from "./pages/HouseholdBook"
 import AddHouseholdBook from "./addingPages/AddHouseholdBook";
 import BankBook from "./pages/BankBook";
+import AddBankBook from "./addingPages/AddBankBook";
 
 export default class App extends Component{
     componentDidMount() {
@@ -38,6 +39,7 @@ export default class App extends Component{
                         <Route path={'/HouseholdBooks'} exact component={HouseholdBook}/>
                         <Route path={'/AddHouseholdBook'} exact component={AddHouseholdBook}/>
                         <Route path={'/BankBook/:householdBookName/:kozhuunName'} exact component={BankBook}/>
+                        <Route path={'/AddBankBook/:householdBookName/:kozhuunName'} exact component={AddBankBook}/>
                     </Switch>
                 </div>
             </BrowserRouter>

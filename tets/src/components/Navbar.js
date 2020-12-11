@@ -14,6 +14,7 @@ export default class Navbar extends Component {
 
     logoutButtonPressed = e => {
         localStorage.clear()
+        //this.props.history.push({pathname:'/'})
     }
 
     render() {
