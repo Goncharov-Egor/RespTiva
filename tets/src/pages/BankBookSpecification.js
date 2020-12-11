@@ -57,12 +57,16 @@ export default class BankBookSpecification extends Component {
         this.props.history.push({pathname : '/AddResident/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName})
     }
 
-    addLand = (e) => {
-        this.props.history.push({pathname : '/AddLand/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName})
+    addLand = (e ) => {
+        this.props.history.push({pathname : '/AddLand/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName } )
     }
 
-    tmpbutton = (e) => {
-        this.props.history.push({pathname : '/GetLendTypesPath'})
+    addLandTypeButtonPressed = (e, index) => {
+        this.props.history.push({pathname : '/AddLandType/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName+ '/' + this.state.Lands[index].cadastralNumber})
+    }
+
+    addAgricultureTypeButtonPressed = (e, index) => {
+        this.props.history.push({pathname : '/AddAgriculture/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName+ '/' + this.state.Lands[index].cadastralNumber})
     }
 
     render() {
@@ -110,7 +114,8 @@ export default class BankBookSpecification extends Component {
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
                                         <h5 className="mb-1">Участок №{index + 1}. Кадастровый номер: {land.cadastralNumber}</h5>
-                                        <small><button type="submit" onClick={e => this.tmpbutton(e)} className="btn btn-outline-info" >Виды земель</button></small>
+                                        <small><button type="submit" onClick={e => this.addLandTypeButtonPressed(e, index)} className="btn btn-outline-info" >Площадь по виду земель</button>-
+                                            <button type="submit" onClick={e => this.addAgricultureTypeButtonPressed(e, index)} className="btn btn-outline-warning" >Площадь земли занятой культурами</button></small>
                                     </div>
                                     <p className="mb-1">Документ: {land.document}</p>
                                     <p className="mb-1">Имя создателя: {land.creatorName}</p>

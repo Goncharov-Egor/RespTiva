@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {Form} from "react-bootstrap";
-import {AddBankBooksPath} from "../helpers/Path";
+import {AddBankBooksPath, AddResidentPath} from "../helpers/Path";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
 
@@ -21,7 +21,7 @@ export default class AddResident extends Component {
             }
         };
 
-        let url = AddBankBooksPath
+        let url = AddResidentPath
         const resident = {
             bankBookName: this.props.match.params.bankBookName,
             householdBookName: this.props.match.params.householdBookName,

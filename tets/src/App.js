@@ -14,6 +14,8 @@ import BankBookSpecification from "./pages/BankBookSpecification";
 import AddResident from "./addingPages/AddResident";
 import AddLand from "./addingPages/AddLand";
 import AddLandType from "./addingPages/AddLandType";
+import LandTypesCreator from "./CreatePages/LandTypesCreator";
+import AddAgriculture from "./addingPages/AddAgriculture";
 
 export default class App extends Component{
     componentDidMount() {
@@ -48,6 +50,10 @@ export default class App extends Component{
                         <Route path={'/AddResident/:householdBookName/:kozhuunName/:bankBookName'} exact component={AddResident}/>
                         <Route path={'/AddLand/:householdBookName/:kozhuunName/:bankBookName'} exact component={AddLand}/>
                         <Route path={'/GetLendTypesPath'} exact component={AddLandType}/>
+                        <Route path={'/AddLandType/:householdBookName/:kozhuunName/:bankBookName/:cadastralNumber'} exact component={AddLandType}/>
+                        <Route path={'/LandTypesCreator'} exact component={LandTypesCreator}/>
+                        <Route path={'/AddAgriculture/:householdBookName/:kozhuunName/:bankBookName/:cadastralNumber'} exact component={AddAgriculture}/>
+
                     </Switch>
                 </div>
             </BrowserRouter>
