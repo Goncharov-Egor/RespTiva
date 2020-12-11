@@ -10,6 +10,8 @@ import HouseholdBook from "./pages/HouseholdBook"
 import AddHouseholdBook from "./addingPages/AddHouseholdBook";
 import BankBook from "./pages/BankBook";
 import AddBankBook from "./addingPages/AddBankBook";
+import BankBookSpecification from "./pages/BankBookSpecification";
+import AddResident from "./addingPages/AddResident";
 
 export default class App extends Component{
     componentDidMount() {
@@ -40,6 +42,9 @@ export default class App extends Component{
                         <Route path={'/AddHouseholdBook'} exact component={AddHouseholdBook}/>
                         <Route path={'/BankBook/:householdBookName/:kozhuunName'} exact component={BankBook}/>
                         <Route path={'/AddBankBook/:householdBookName/:kozhuunName'} exact component={AddBankBook}/>
+                        <Route path={'/BankBookSpecification/:householdBookName/:kozhuunName/:bankBookName'} exact component={BankBookSpecification}/>
+                        <Route path={'/AddResident/:householdBookName/:kozhuunName/:bankBookName'} exact component={AddResident}/>
+
                     </Switch>
                 </div>
             </BrowserRouter>

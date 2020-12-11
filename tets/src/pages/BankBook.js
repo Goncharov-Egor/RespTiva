@@ -49,8 +49,8 @@ export default class BankBook extends Component {
         this.props.history.push({pathname : '/AddBankBook/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName})
     }
 
-    openButtonClicked = (e) => {
-
+    openButtonClicked = (e, ind) => {
+        this.props.history.push({pathname: '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.state.bankBooks[ind].name})
     }
 
 
