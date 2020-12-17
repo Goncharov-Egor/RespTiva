@@ -14,11 +14,13 @@ export default class Navbar extends Component {
 
     logoutButtonPressed = e => {
         localStorage.clear()
+        this.setState({
+            token: null
+        })
         //this.props.history.push({pathname:'/'})
     }
 
     render() {
-
         if(this.state.token) {
             return (
                 <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
@@ -43,7 +45,7 @@ export default class Navbar extends Component {
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/HouseholdBooks">
-                                Список похозяйственных книг
+                                Реестр похозяйственных книг
                             </NavLink>
                         </li>
                         <button className="btn btn-primary" onClick={e => this.logoutButtonPressed(e)}>Выйти</button>

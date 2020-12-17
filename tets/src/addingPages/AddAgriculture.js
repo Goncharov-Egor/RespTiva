@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AddAgriculturePath, AddLandTypePath, GetAgriculturePath, GetLendTypesPath} from "../helpers/Path";
+import {AddAgriculturePath, AddLandTypePath, GetAgriculturePath, GetLandPath, GetLendTypesPath} from "../helpers/Path";
 import axios from "axios";
 
 export default class AddAgriculture extends Component {
@@ -26,6 +26,25 @@ export default class AddAgriculture extends Component {
             .catch(err => {
                 console.log(err)
             })
+
+        url = GetLandPath
+        const req = {
+            householdBookName: this.props.match.params.householdBookName,
+            kozhuunName: this.props.match.params.kozhuunName,
+            bankBookName: this.props.match.params.bankBookName,
+            cadastralNumber: this.props.match.params.cadastralNumber
+        }
+
+        console.log(url)
+
+        await axios.post(url, req, config).then(respnse => {
+            console.log(respnse)
+            //console.log(Users)
+            this.setState({
+                agricultures: respnse.data.payload.agricultures
+            })
+            console.log(respnse)
+        })
 
         this.setState({
             isApply: true
@@ -116,21 +135,21 @@ export default class AddAgriculture extends Component {
                     </div>
                     <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить</button>
                 </div>
-                {/*<div>*/}
-                {/*    {*/}
-                {/*        this.state.landTypes1.map((landType, index) => {*/}
-                {/*            return(<a href="#" className="list-group-item list-group-item-action"*/}
-                {/*                      aria-current="true">*/}
-                {/*                <div className="d-flex w-100 justify-content-between">*/}
-                {/*                    <h5 className="mb-1">{landType.landType}</h5>*/}
-                {/*                </div>*/}
-                {/*                <p className="mb-1">Создатель: {landType.creatorName}</p>*/}
-                {/*                <small>Площадь: {landType.area}</small>*/}
-                {/*            </a>)*/}
-                {/*        })*/}
+                <div>
+                    {
+                        this.state.agricultures.map((agriculture, index) => {
+                            return(<a href="#" className="list-group-item list-group-item-action"
+                                      aria-current="true">
+                                <div className="d-flex w-100 justify-content-between">
+                                    <h5 className="mb-1">{agriculture.agriculture}</h5>
+                                </div>
+                                <p className="mb-1">Создатель: {agriculture.creatorName}</p>
+                                <small>Площадь: {agriculture.area}</small>
+                            </a>)
+                        })
 
-                {/*    }*/}
-                {/*</div>*/}
+                    }
+                </div>
             </a>
         )
     }

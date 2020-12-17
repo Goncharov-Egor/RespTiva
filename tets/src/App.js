@@ -31,10 +31,16 @@ export default class App extends Component{
         })
     }
 
+    componentWillMount() {
+        this.setState({
+            token: null
+        })
+    }
+
     render() {
         return (
             <BrowserRouter>
-                <Navbar/>
+                <Navbar token={this.state.token}/>
                 <div className="container pt-4">
                     <Switch>
                         <Route path={'/'} exact component={Home}/>

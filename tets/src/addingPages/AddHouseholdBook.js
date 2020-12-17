@@ -1,8 +1,31 @@
 import React, {Component, Fragment} from "react";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
-import {Form} from "react-bootstrap";
+import {Dropdown, Form} from "react-bootstrap";
 import {AddHouseHoldBookPath, LoginPath} from "../helpers/Path";
+import Select from 'react-select'
+import AddHouseHoldBookError from "../errors/AddHouseHoldBookError";
+
+const options = [
+    { value: "Бай-Тайгинский", label: "Бай-Тайгинский"},
+    { value: "Барун-Хемчикский", label: "Барун-Хемчикский"},
+    { value: "Дзун-Хемчикский", label: "Дзун-Хемчикский"},
+    { value: "Каа-Хемский", label: "Каа-Хемский"},
+    { value: "Кызылский", label: "Кызылский"},
+    { value: "Монгун-Тайгинский", label: "Монгун-Тайгинский"},
+    { value: "Овюрский", label: "Овюрский"},
+    { value: "Пий-Хемский", label: "Пий-Хемский"},
+    { value: "Сут-Хольский", label: "Сут-Хольский"},
+    { value: "Тандинский", label: "Тандинский"},
+    { value: "Тере-Хольский", label: "Тере-Хольский"},
+    { value: "Тес-Хемский", label: "Тес-Хемский"},
+    { value: "Тоджинский", label: "Тоджинский"},
+    { value: "Улуг-Хемский", label: "Улуг-Хемский"},
+    { value: "Чаа-Хольский", label: "Чаа-Хольский"},
+    { value: "Чеди-Хольский", label: "Чеди-Хольский"},
+    { value: "Эрзинский", label: "Эрзинский"},
+    { value: "Кылыский", label: "Кылыский"}
+]
 
 export default class AddHouseholdBook extends Component {
 
@@ -17,7 +40,7 @@ export default class AddHouseholdBook extends Component {
     addButtonPressed = async (e) => {
 
         const HouseholdBook = {
-            kozhuunName: this.kozhuunName,
+            kozhuunName: this.state.kozhuunName,
             name: this.name
         }
 
@@ -37,6 +60,10 @@ export default class AddHouseholdBook extends Component {
         await axios.post(url, HouseholdBook, config)
             .then(res => {
                 console.log(res)
+                this.setState({
+                    isInvalid: !res.data.success,
+                    message: res.data.message
+                })
             })
             .catch(err => {
                 console.log(err)
@@ -45,6 +72,23 @@ export default class AddHouseholdBook extends Component {
         this.setState({
             isApply: true
         })
+        if(!this.state.isInvalid) {
+            this.props.history.push({pathname : '/HouseholdBooks'})
+        }
+    }
+
+    componentWillMount() {
+        this.setState({
+            isInvalid: false,
+            message: ""
+        })
+    }
+
+    selectCozuunName = (e) => {
+        this.setState({
+            kozhuunName: e.value
+        })
+        console.log(e.value)
     }
 
     render() {
@@ -52,22 +96,25 @@ export default class AddHouseholdBook extends Component {
           //  return (<Redirect to={'/HouseholdBooks'}/>)
         //}
         return(<Fragment>
-            <h1>Регистарция</h1>
+            <h1>Добавление похозяйственной книги</h1>
             <Form>
                 <Form.Group>
+                    <div>
+                        <div>
+                            <Select
+                                onChange={e=>this.selectCozuunName(e)}
+                                options={options}
+                            />
+                        </div>
+                    </div>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1"></span>
+                        </div>
+                        <input onChange={e => this.name = e.target.value} name='name' placeholder='Номер книги' className="form-control" aria-describedby="basic-addon1"/>
+                    </div>
 
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
-                        </div>
-                        <input onChange={e => this.kozhuunName = e.target.value} name='kozhuunName' placeholder='Название кожууна' className="form-control" aria-describedby="basic-addon1"/>
-                    </div>
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
-                        </div>
-                        <input onChange={e => this.name = e.target.value} name='name' placeholder='Название книги' className="form-control" aria-describedby="basic-addon1"/>
-                    </div>
+                    <AddHouseHoldBookError message={this.state.message} isInvalid={this.state.isInvalid}/>
 
                 </Form.Group>
             </Form>

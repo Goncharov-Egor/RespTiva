@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {AddLandPath, AddLandTypePath, GetLandsPath, GetLendTypesPath} from "../helpers/Path";
+import {AddLandPath, AddLandTypePath, GetLandPath, GetLandsPath, GetLendTypesPath} from "../helpers/Path";
 import axios from "axios";
 import {Form} from "react-bootstrap";
 
@@ -63,20 +63,22 @@ export default class AddLandType extends Component {
                 console.log(err)
             })
 
-        url = GetLandsPath
+        url = GetLandPath
         const req = {
             householdBookName: this.props.match.params.householdBookName,
             kozhuunName: this.props.match.params.kozhuunName,
-            bankBookName: this.props.match.params.bankBookName
+            bankBookName: this.props.match.params.bankBookName,
+            cadastralNumber: this.props.match.params.cadastralNumber
         }
+
+        console.log(url)
 
         await axios.post(url, req, config).then(respnse => {
             console.log(respnse)
             //console.log(Users)
             this.setState({
-                landTypes1: respnse.data.payload.lands[0].landTypes
+                landTypes1: respnse.data.payload.landTypes
             })
-            console.log("asdfghjkjhgfdsdfghj")
             console.log(respnse)
         })
         

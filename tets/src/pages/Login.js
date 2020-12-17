@@ -1,8 +1,9 @@
 import React, {Fragment, useState, Component} from 'react';
-import {Form} from "react-bootstrap";
+import {Dropdown, Form} from "react-bootstrap";
 import axios from "axios";
 import {LoginPath} from "../helpers/Path";
 import {Redirect} from 'react-router-dom'
+import LoginError from '../errors/LoginError'
 
 
 export default class Login extends Component {
@@ -38,12 +39,22 @@ export default class Login extends Component {
                     this.props.setToken(res.data.payload.token)
                 }
                 console.log(res)
+                this.setState({
+                    isIncorrectValues: !res.data.success
+                })
             })
             .catch(err => {
                 console.log(err)
             })
 
     }
+
+    componentWillMount() {
+        this.setState({
+            isIncorrectValues: false
+        })
+    }
+
 
     setToken = token => {
         this.setState({
@@ -53,6 +64,7 @@ export default class Login extends Component {
     }
 
     render() {
+        console.log("Render called")
         if(this.state.loggedIn) {
             return (<Redirect to={'/'}/>)
         }
@@ -61,6 +73,7 @@ export default class Login extends Component {
                 <h1>Вход</h1>
                 <Form>
                     <Form.Group>
+
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon1"></span>
@@ -73,6 +86,7 @@ export default class Login extends Component {
                             </div>
                             <input onChange={e => this.password = e.target.value} name='password' type='password' placeholder='Пароль' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
+                        <LoginError isInvalid={this.state.isIncorrectValues}/>
                     </Form.Group>
                 </Form>
                 <button type="submit" className="btn btn-primary" onClick={e => this.registrationButtonPressed(e)}>Войти</button>

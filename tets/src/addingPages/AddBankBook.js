@@ -98,7 +98,7 @@ export default class AddBankBook extends Component {
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1"></span>
                         </div>
-                        <input onChange={e => this.address = e.target.value} name='name' placeholder='Адрес' className="form-control" aria-describedby="basic-addon1"/>
+                        <input onChange={e => this.address = e.target.value} name='name' placeholder='Адрес хозяйства (название населенного пункта, название улицы, номер дома, квартиры)' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
 
                     <div className="input-group mb-3">

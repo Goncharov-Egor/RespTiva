@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {withRouter} from 'react-router-dom'
 import {GetHouseHoldBooksPath} from "../helpers/Path";
 import axios from "axios";
+import {expiredTokenErrorConstant} from "../errors/ErrorConstants";
+import InvalidTokenError from "../errors/InvalidTokenError";
 
 export default class HouseholdBook extends Component {
 
@@ -23,12 +25,18 @@ export default class HouseholdBook extends Component {
         let url = GetHouseHoldBooksPath
 
         axios.get(url, config).then((respnse) => {
-            let HouseholdBooks = (JSON.parse(JSON.stringify(respnse)).data.payload.householdBooks)
-            this.setState({
-                HouseholdBooks: HouseholdBooks,
-                isLoaded: true
-            })
-            //console.log(Users)
+            if(respnse.data.message === expiredTokenErrorConstant){
+                this.setState({
+                    isExpiredToken: true
+                })
+            } else {
+                let HouseholdBooks = (JSON.parse(JSON.stringify(respnse)).data.payload.householdBooks)
+                this.setState({
+                    HouseholdBooks: HouseholdBooks,
+                    isLoaded: true
+                })
+            }
+            console.log(respnse)
         })
 
     }
@@ -49,10 +57,13 @@ export default class HouseholdBook extends Component {
     }
 
     render() {
-
+        if (this.state.isExpiredToken) {
+            return <InvalidTokenError isInvalid={true}/>
+        }
         if(this.state.isLoaded) {
             return (
                 <ul className="list-group">
+                    <h1>Реестр похозяйственных книг</h1>
                     <button type="submit" className="btn btn-primary" onClick={e => this.addButtonClicked(e)}>Добавить книгу</button>
                     {
                         this.state.HouseholdBooks.map((empl, index) => {
