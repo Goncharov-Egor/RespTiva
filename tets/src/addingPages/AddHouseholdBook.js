@@ -2,39 +2,49 @@ import React, {Component, Fragment} from "react";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
 import {Dropdown, Form} from "react-bootstrap";
-import {AddHouseHoldBookPath, LoginPath} from "../helpers/Path";
+import {AddHouseHoldBookPath, GetKozhuunsPath, LoginPath} from "../helpers/Path";
 import Select from 'react-select'
 import AddHouseHoldBookError from "../errors/AddHouseHoldBookError";
 
-const options = [
-    { value: "Бай-Тайгинский", label: "Бай-Тайгинский"},
-    { value: "Барун-Хемчикский", label: "Барун-Хемчикский"},
-    { value: "Дзун-Хемчикский", label: "Дзун-Хемчикский"},
-    { value: "Каа-Хемский", label: "Каа-Хемский"},
-    { value: "Кызылский", label: "Кызылский"},
-    { value: "Монгун-Тайгинский", label: "Монгун-Тайгинский"},
-    { value: "Овюрский", label: "Овюрский"},
-    { value: "Пий-Хемский", label: "Пий-Хемский"},
-    { value: "Сут-Хольский", label: "Сут-Хольский"},
-    { value: "Тандинский", label: "Тандинский"},
-    { value: "Тере-Хольский", label: "Тере-Хольский"},
-    { value: "Тес-Хемский", label: "Тес-Хемский"},
-    { value: "Тоджинский", label: "Тоджинский"},
-    { value: "Улуг-Хемский", label: "Улуг-Хемский"},
-    { value: "Чаа-Хольский", label: "Чаа-Хольский"},
-    { value: "Чеди-Хольский", label: "Чеди-Хольский"},
-    { value: "Эрзинский", label: "Эрзинский"},
-    { value: "Кылыский", label: "Кылыский"}
-]
+var options = []
 
 export default class AddHouseholdBook extends Component {
 
     state = {}
-
-    componentDidMount() {
+    async componentDidMount()  {
         this.setState({
             isApply: false
         })
+
+        let config = {
+            method: 'post',
+            url: LoginPath,
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : localStorage.getItem('token')
+            }
+        };
+
+        let url = GetKozhuunsPath
+
+        await axios.get(url, config).then(res => {
+            console.log(res)
+            var opt = []
+            res.data.payload.kozhuuns.map((kozhuun) => {
+                console.log(kozhuun)
+                opt.push({
+                    value: kozhuun.name,
+                    label: kozhuun.name
+                })
+            })
+            this.setState({
+                options: opt
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+
     }
 
     addButtonPressed = async (e) => {
@@ -100,10 +110,11 @@ export default class AddHouseholdBook extends Component {
             <Form>
                 <Form.Group>
                     <div>
-                        <div>
+                        <div className="mb-3">
                             <Select
+                                placeholder='Кожуун'
                                 onChange={e=>this.selectCozuunName(e)}
-                                options={options}
+                                options={this.state.options}
                             />
                         </div>
                     </div>

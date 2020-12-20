@@ -2,6 +2,9 @@ import React, {Component, Fragment} from "react";
 import {AddLandPath, AddLandTypePath, GetLandPath, GetLandsPath, GetLendTypesPath} from "../helpers/Path";
 import axios from "axios";
 import {Form} from "react-bootstrap";
+import Select from "react-select";
+import {Redirect} from "react-router-dom";
+import AddHouseHoldBookError from "../errors/AddHouseHoldBookError";
 
 export default class AddLandType extends Component {
 
@@ -33,10 +36,19 @@ export default class AddLandType extends Component {
         await axios.post(url, req, config)
             .then(res => {
                 console.log(res)
+
+                this.setState({
+                    isSuccess: res.data.success
+                })
+
             })
             .catch(err => {
                 console.log(err)
             })
+
+        this.setState({
+            isFirst: false
+        })
     }
 
 
@@ -55,8 +67,14 @@ export default class AddLandType extends Component {
         await axios.get(url, config)
             .then(res => {
                 console.log(res)
+                var opt = []
+                res.data.payload.landTypes.map((lt) => {
+                    opt.push({value: lt.name, label: lt.name})
+                })
+                console.log(opt)
                 this.setState({
-                    landTypes: res.data.payload.landTypes
+                    landTypes: res.data.payload.landTypes,
+                    options: opt
                 })
             })
             .catch(err => {
@@ -89,14 +107,17 @@ export default class AddLandType extends Component {
 
     componentWillMount() {
         this.setState({
-            isApply: false
+            isApply: false,
+            options: [],
+            isSuccess: true,
+            isFirst: true
         })
     }
 
     selectorChanged = (e) => {
-        console.log(e.target.value)
+        console.log(e.value)
         this.setState({
-            landType: e.target.value
+            landType: e.value
         })
     }
 
@@ -113,20 +134,23 @@ export default class AddLandType extends Component {
                 </h1>
             )
         }
+        if(this.state.isSuccess && !this.state.isFirst) {
+            let path = '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName
+            return(<Redirect to={path}/>)
+        }
         console.log(this.state.landTypes1)
         return (
                 <a>
                     <div>
-                        <select onChange={e => this.selectorChanged(e)} class="form-select" aria-label="Default select example" defaultValue="Выберите">
-                            <option selected>Выберите</option>
-                            {
-                                this.state.landTypes.map((landType, index) => {
-                                    return(
-                                    <option value={landType.name}>{index + 1}. {landType.name}</option>)
-                                })
-                            }
-                        </select>
-                        <button type="submit" className="btn btn-primary btn-sm" onClick={e => this.landCreatorButtonPressed(e)}>+</button>
+                        <div className="mb-3">
+                            <button type="submit" className="btn btn-primary btn-sm" onClick={e => this.landCreatorButtonPressed(e)}>+</button>
+
+                            <Select
+                                placeholder='Вид'
+                                onChange={e=>this.selectorChanged(e)}
+                                options={this.state.options}
+                            />
+                        </div>
                     </div>
                     <div>
                         <div className="input-group mb-3">
@@ -135,7 +159,10 @@ export default class AddLandType extends Component {
                             </div>
                             <input onChange={e => this.value = e.target.value} placeholder='Площадь' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
-                        <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить</button>
+                        <AddHouseHoldBookError message="Неверные данные" isInvalid={!this.state.isSuccess}/>
+                        <div className="input-group mb-3">
+                            <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить</button>
+                        </div>
                     </div>
                     <div>
                     {
@@ -152,6 +179,7 @@ export default class AddLandType extends Component {
 
                     }
                     </div>
+
                 </a>
         )
     }

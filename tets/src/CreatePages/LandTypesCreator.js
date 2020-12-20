@@ -43,7 +43,9 @@ export default class LandTypesCreator extends Component {
                         </div>
                     </Form.Group>
                 </Form>
-                <button type="submit" className="btn btn-primary" onClick={e => this.buttonClicked(e)}>Войти</button>
+                <div className="input-group mb-3">
+                    <button type="submit" className="btn btn-primary" onClick={e => this.buttonClicked(e)}>Добавить</button>
+                </div>
             </Fragment>
         )
     }

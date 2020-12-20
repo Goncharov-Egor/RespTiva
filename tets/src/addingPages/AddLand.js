@@ -60,7 +60,7 @@ export default class AddLand extends Component {
         }
         return(
             <Fragment>
-                <h1>Добавление члена хозяйства</h1>
+                <h1>Добавление земельного участка</h1>
                 <Form>
                     <Form.Group>
 
@@ -68,7 +68,14 @@ export default class AddLand extends Component {
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon1"></span>
                             </div>
-                            <input onChange={e => this.document = e.target.value} name='document' placeholder='Реквизиты документа' className="form-control" aria-describedby="basic-addon1"/>
+                            <input onChange={e => this.cadastralNumber = e.target.value} name='cadastralNumber' placeholder='Кадастровый номер участка' className="form-control" aria-describedby="basic-addon1"/>
+                        </div>
+
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="basic-addon1"></span>
+                            </div>
+                            <input onChange={e => this.document = e.target.value} name='document' placeholder='Реквизиты документа, подтверждающие право на земельный участок' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -77,12 +84,6 @@ export default class AddLand extends Component {
                             <input onChange={e => this.documentEndDate = e.target.value} name='documentEndDate' placeholder='Срок окончания действия документа' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
 
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="basic-addon1"></span>
-                            </div>
-                            <input onChange={e => this.cadastralNumber = e.target.value} name='cadastralNumber' placeholder='Кадастровый номер участка' className="form-control" aria-describedby="basic-addon1"/>
-                        </div>
 
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -100,7 +101,7 @@ export default class AddLand extends Component {
 
                     </Form.Group>
                 </Form>
-                <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить члена хозяйства</button>
+                <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить земельный участок</button>
             </Fragment>
         )
     }

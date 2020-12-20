@@ -3,6 +3,13 @@ import {Form} from "react-bootstrap";
 import {AddBankBooksPath, AddResidentPath} from "../helpers/Path";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
+import moment from "moment";
+import Select from "react-select";
+
+const genderOptions = [{ value: "Мужчина", label: "Мужчина" }, { value: "Женщина", label: "Женщина" }]
+const relationOptions = [{ value: "Сын", label: "Сын" }, { value: "Дочь", label: "Дочь" }
+    , { value: "Брат", label: "Брат" }, { value: "Сестра", label: "Сестра" }, { value: "Муж", label: "Муж" }
+    , { value: "Жена", label: "Жена" } , { value: "Мать", label: "Мать" }, { value: "Отец", label: "Отец" }, { value: "Патронат", label: "Патронат" }]
 
 export default class AddResident extends Component {
 
@@ -21,16 +28,19 @@ export default class AddResident extends Component {
             }
         };
 
+        let getBDate = new Date(this.birthDate)
+        let BDate = moment(getBDate).format('DD.MM.YYYY')
+
         let url = AddResidentPath
         const resident = {
             bankBookName: this.props.match.params.bankBookName,
             householdBookName: this.props.match.params.householdBookName,
             kozhuunName: this.props.match.params.kozhuunName,
             residents: [{
-                birthDate: this.birthDate,
-                gender: this.gender,
+                birthDate: BDate,
+                gender: this.state.gender,
                 name: this.name,
-                relation: this.relation,
+                relation: this.state.relation,
                 residenceMark: this.residenceMark
             }]
         }
@@ -54,6 +64,18 @@ export default class AddResident extends Component {
         })
     }
 
+    selectGender = (e) => {
+        this.setState({
+            gender: e.value
+        })
+    }
+
+    selectRealtion = (e) => {
+        this.setState({
+            relation: e.value
+        })
+    }
+
     render() {
         if(this.state.isApply) {
             let path = '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName
@@ -68,15 +90,16 @@ export default class AddResident extends Component {
 
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" id="basic-addon1"></span>
+                                <span className="input-group-text" id="basic-addon1">Дата рождения</span>
                             </div>
-                            <input onChange={e => this.birthDate = e.target.value} name='birthDate' placeholder='Дата рождения' className="form-control" aria-describedby="basic-addon1"/>
+                            <input type="date" onChange={e => this.birthDate = e.target.value} name='birthDate' placeholder='Дата рождения' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="basic-addon1"></span>
-                            </div>
-                            <input onChange={e => this.gender = e.target.value} name='gender' placeholder='Мужчина/Женщина' className="form-control" aria-describedby="basic-addon1"/>
+                        <div className="mb-3">
+                            <Select placeholder="Пол"
+                                    onChange={e=>this.selectGender(e)}
+                                    options={genderOptions}
+
+                            />
                         </div>
 
                         <div className="input-group mb-3">
@@ -86,11 +109,12 @@ export default class AddResident extends Component {
                             <input onChange={e => this.name = e.target.value} name='name' placeholder='ФИО' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
 
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="basic-addon1"></span>
-                            </div>
-                            <input onChange={e => this.relation = e.target.value} name='relation' placeholder='Отношение к главе хозяйства (например мать, брат, муж, сын, патронат и тд)' className="form-control" aria-describedby="basic-addon1"/>
+                        <div className="mb-3">
+                            <Select placeholder="Отношение к главе хозяйства"
+                                    onChange={e=>this.selectGender(e)}
+                                    options={relationOptions}
+
+                            />
                         </div>
 
                         <div className="input-group mb-3">
