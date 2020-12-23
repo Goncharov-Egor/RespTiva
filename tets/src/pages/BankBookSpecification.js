@@ -1,9 +1,14 @@
 import React, {Component, Fragment} from "react";
 import {Form} from "react-bootstrap";
-import {GetHouseHoldBooksPath, GetLandsPath, GetResidentsPath} from "../helpers/Path";
+import {GetFarmAnimalsPath, GetHouseHoldBooksPath, GetLandsPath, GetResidentsPath} from "../helpers/Path";
 import axios from "axios";
+import FarmAnimals from "../components/FarmAnimals";
 
 export default class BankBookSpecification extends Component {
+
+    state = {
+        animals: []
+    }
 
     componentDidMount = async () => {
 
@@ -32,6 +37,16 @@ export default class BankBookSpecification extends Component {
             this.setState({
                 Residents: respnse.data.payload.residents,
             })
+        })
+
+        url = GetFarmAnimalsPath
+        await axios.post(url, BBook, config).then((res) => {
+            console.log(res)
+            this.setState({
+                animals: res.data.payload.animals
+            })
+        }).then(err => {
+            console.log(err)
         })
 
         url = GetLandsPath
@@ -67,6 +82,10 @@ export default class BankBookSpecification extends Component {
 
     addAgricultureTypeButtonPressed = (e, index) => {
         this.props.history.push({pathname : '/AddAgriculture/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName+ '/' + this.state.Lands[index].cadastralNumber})
+    }
+
+    addFarmAnimalPressed = (e) => {
+        this.props.history.push({pathname : '/AddFarmAnimals/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName })
     }
 
     render() {
@@ -128,6 +147,26 @@ export default class BankBookSpecification extends Component {
                         }
                     </ul>
 
+                </Form>
+                <Form>
+                    <h2>-</h2>
+                    <h2>Сельскохозяйственные животные, птицы и пчелы</h2>
+                    <ul className="list-group">
+                        <button type="submit" className="btn btn-primary" onClick={e => this.addFarmAnimalPressed(e)}>Добавить</button>
+                        {
+                            this.state.animals.map((animal, index) => {
+                                return(<a href="#" className="list-group-item list-group-item-action"
+                                          aria-current="true">
+                                    <div className="d-flex w-100 justify-content-between">
+                                        <h5 className="mb-1">{index + 1}. {animal.parentName} {animal.name}</h5>
+                                    </div>
+                                    <p className="mb-1">Количество: {animal.value}</p>
+                                </a>)
+                                // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>
+                            })
+
+                        }
+                    </ul>
                 </Form>
             </Fragment>
 
