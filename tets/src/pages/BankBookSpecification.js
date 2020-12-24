@@ -155,10 +155,22 @@ export default class BankBookSpecification extends Component {
                         <button type="submit" className="btn btn-primary" onClick={e => this.addFarmAnimalPressed(e)}>Добавить</button>
                         {
                             this.state.animals.map((animal, index) => {
+                                if(animal.parentName === null) {
+                                    return(
+                                        <a href="#" className="list-group-item list-group-item-action"
+                                           aria-current="true">
+                                            <div className="d-flex w-100 justify-content-between">
+                                                <h5 className="mb-1">{index + 1}. {animal.name} </h5>
+                                            </div>
+                                            <p className="mb-1">Количество: {animal.value}</p>
+                                        </a>
+                                    )
+                                }
                                 return(<a href="#" className="list-group-item list-group-item-action"
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
-                                        <h5 className="mb-1">{index + 1}. {animal.parentName} {animal.name}</h5>
+                                        <h5 className="mb-1">{index + 1}. {animal.parentName} <small
+                                            className="text-muted">{animal.name} </small></h5>
                                     </div>
                                     <p className="mb-1">Количество: {animal.value}</p>
                                 </a>)
