@@ -34,7 +34,7 @@ export default class AddBankBook extends Component {
             name: this.name
         }
 
-        let isVal = (isNumeric(this.inn) && (this.inn.length === 12))
+        let isVal = ((isNumeric(this.inn) && (this.inn.length === 12)) || this.inn === null || this.inn === "" || this.inn.length === 0)
 
         this.setState({
             isInnValid: isVal
@@ -98,12 +98,12 @@ export default class AddBankBook extends Component {
 
         console.log(isNumeric(this.passportId), (this.passportId.length === 4))
 
-        let isPI = (isNumeric(this.passportId) && (this.passportId.length === 4))
-        let isPS = (isNumeric(this.passportSeries) && (this.passportSeries.length === 6))
+        let isPI = ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0)
+        let isPS = ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
 
         this.setState({
-            isPassportIdValid: (isNumeric(this.passportId) && (this.passportId.length === 4)),
-            isPassportSeriesValid: (isNumeric(this.passportSeries) && (this.passportSeries.length === 6))
+            isPassportIdValid: ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0),
+            isPassportSeriesValid: ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
 
         })
 
