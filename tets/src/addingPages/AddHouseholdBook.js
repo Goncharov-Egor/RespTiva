@@ -51,7 +51,8 @@ export default class AddHouseholdBook extends Component {
 
         const HouseholdBook = {
             kozhuunName: this.state.kozhuunName,
-            name: this.name
+            name: this.name,
+            villageName: this.villageName
         }
 
         console.log(HouseholdBook)
@@ -123,6 +124,13 @@ export default class AddHouseholdBook extends Component {
                             <span className="input-group-text" id="basic-addon1"></span>
                         </div>
                         <input onChange={e => this.name = e.target.value} name='name' placeholder='Номер книги' className="form-control" aria-describedby="basic-addon1"/>
+                    </div>
+
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1"></span>
+                        </div>
+                        <input onChange={e => this.villageName = e.target.value} name='villageName' placeholder='Название сумона' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
 
                     <AddHouseHoldBookError message={this.state.message} isInvalid={this.state.isInvalid}/>

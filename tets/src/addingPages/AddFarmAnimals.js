@@ -32,7 +32,7 @@ export default class AddFarmAnimals extends Component {
         };
 
         await axios.get(url, config).then( res => {
-            //console.log(res)
+            console.log(res)
             res.data.payload.farmAnimals.map((animal) => {
 
                 //console.log(animal.parentName, animal.name)

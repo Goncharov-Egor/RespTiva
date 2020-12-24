@@ -21,25 +21,13 @@ export default class AddBankBook extends Component {
 
     addButtonPressed = async (e) => {
 
-        let isAllInputExist = this.additionalInfo !== "" && this.address !== "" && this.inn !== "" && this.name !== ""
-        && this.birthDate !== ""
-        && this.name1 !== ""
-        && this.state.gender !== ""
-        && this.issueDate !== ""
-        && this.issuingAuthority !== ""
-        && this.passportId !== ""
-        && this.passportSeries !== ""
-        if(!isAllInputExist) {
-            this.setState({
-                isAllFieldsFilled: isAllInputExist
-            })
-            return
-        }
+        let getСreationDate = new Date(this.creationDate)
+        let creationDate = moment(getСreationDate).format('DD.MM.YYYY')
 
         const BankBook = {
             additionalInfo: this.additionalInfo,
             address: this.address,
-            cadastralNumber: "12312444444444444",
+            creationDate: creationDate,
             householdBookName: this.props.match.params.householdBookName,
             inn: this.inn,
             kozhuunName: this.props.match.params.kozhuunName,
@@ -190,6 +178,13 @@ export default class AddBankBook extends Component {
 
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1">Дата создания</span>
+                        </div>
+                        <input type="date" onChange={e => this.creationDate = e.target.value} name='issueDate' placeholder='Дата выдачи паспорта' className="form-control" aria-describedby="basic-addon1"/>
+                    </div>
+
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1"></span>
                         </div>
                         <input onChange={e => this.address = e.target.value} name='name' placeholder='Адрес хозяйства (название населенного пункта, название улицы, номер дома, квартиры)' className="form-control" aria-describedby="basic-addon1"/>
@@ -214,7 +209,7 @@ export default class AddBankBook extends Component {
                     <h2>Данные главного по хозяйству</h2>
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
+                            <span className="input-group-text" id="basic-addon1">Дата рождения</span>
                         </div>
                         <input type="date" onChange={e => this.birthDate = e.target.value} name='birthDate' placeholder='Дата рождения' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
@@ -234,7 +229,7 @@ export default class AddBankBook extends Component {
 
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
+                            <span className="input-group-text" id="basic-addon1">Дата выдачи паспорта</span>
                         </div>
                         <input type="date" onChange={e => this.issueDate = e.target.value} name='issueDate' placeholder='Дата выдачи паспорта' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
