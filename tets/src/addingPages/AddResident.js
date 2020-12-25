@@ -111,7 +111,7 @@ export default class AddResident extends Component {
 
                         <div className="mb-3">
                             <Select placeholder="Отношение к главе хозяйства"
-                                    onChange={e=>this.selectGender(e)}
+                                    onChange={e=>this.selectRealtion(e)}
                                     options={relationOptions}
 
                             />

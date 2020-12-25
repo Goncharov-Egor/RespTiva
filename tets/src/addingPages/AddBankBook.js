@@ -21,26 +21,39 @@ export default class AddBankBook extends Component {
 
     addButtonPressed = async (e) => {
 
-        let getСreationDate = new Date(this.creationDate)
-        let creationDate = moment(getСreationDate).format('DD.MM.YYYY')
 
-        const BankBook = {
-            additionalInfo: this.additionalInfo,
-            address: this.address,
-            creationDate: creationDate,
-            householdBookName: this.props.match.params.householdBookName,
-            inn: this.inn,
-            kozhuunName: this.props.match.params.kozhuunName,
-            name: this.name
+
+        if(this.creationDate !== "") {
+            var getСreationDate = new Date(this.creationDate)
+            var creationDate = moment(getСreationDate).format('DD.MM.YYYY')
         }
+        const BankBook = {
+            additionalInfo: (this.additionalInfo === "" ? null : this.additionalInfo),
+            address: (this.address === "" ? null : this.address),
+            creationDate: (this.creationDate === "" ? null : creationDate),
+            householdBookName: this.props.match.params.householdBookName,
+            inn: (this.inn === "" ? null : this.inn),
+            kozhuunName: this.props.match.params.kozhuunName,
+            name: (this.name === ""? null : this.name)
+        }
+
+        console.log(BankBook.name)
 
         let isVal = ((isNumeric(this.inn) && (this.inn.length === 12)) || this.inn === null || this.inn === "" || this.inn.length === 0)
 
         this.setState({
             isInnValid: isVal
         })
+        let isPI = ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0)
+        let isPS = ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
+
+        this.setState({
+            isPassportIdValid: ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0),
+            isPassportSeriesValid: ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
+
+        })
         console.log("aaaaaaaaa", isNumeric(this.inn), (this.inn.length === 12), isVal)
-        if(!isVal)
+        if(!(isVal && isPI && isPS && this.name !== "" && this.name !== null))
             return
 
 
@@ -71,25 +84,28 @@ export default class AddBankBook extends Component {
 
         url = AddResidentPath
 
-        var getBDate = new Date(this.birthDate)
-        console.log(moment(getBDate).format('DD.MM.YYYY'))
-        var Bdate = moment(getBDate).format('DD.MM.YYYY')
-        var getIsDate = new Date(this.issueDate)
-        var IsDate = moment(getIsDate).format('DD.MM.YYYY')
+        if(this.birthDate !== "") {
+            var getBDate = new Date(this.birthDate)
+            var Bdate = moment(getBDate).format('DD.MM.YYYY')
+        }
+        if(this.issueDate != "") {
+            var getIsDate = new Date(this.issueDate)
+            var IsDate = moment(getIsDate).format('DD.MM.YYYY')
+        }
 
         const resident = {
             bankBookName: this.name,
             householdBookName: this.props.match.params.householdBookName,
             kozhuunName: this.props.match.params.kozhuunName,
             residents: [{
-                birthDate: Bdate,
-                gender: this.state.gender,
-                name: this.name1,
+                birthDate: (this.birthDate === "" ? null : Bdate),
+                gender: (this.state.gender === "" ? null : this.state.gender),
+                name: (this.name1 === "" ? null : this.name1),
                 passport: {
-                    issueDate: IsDate,
-                    issuingAuthority: this.issuingAuthority,
-                    passportId: this.passportId,
-                    passportSeries: this.passportSeries
+                    issueDate: (this.issueDate === "" ? null : IsDate),
+                    issuingAuthority: (this.issuingAuthority === "" ? null : this.issuingAuthority),
+                    passportId: (this.passportId === "" ? null : this.passportId),
+                    passportSeries: (this.passportSeries === "" ? null : this.passportSeries)
                 },
                 relation: null,
                 residenceMark: null
@@ -97,18 +113,6 @@ export default class AddBankBook extends Component {
         }
 
         console.log(isNumeric(this.passportId), (this.passportId.length === 4))
-
-        let isPI = ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0)
-        let isPS = ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
-
-        this.setState({
-            isPassportIdValid: ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0),
-            isPassportSeriesValid: ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
-
-        })
-
-        if(!(isPI && isPS))
-            return
 
         if(this.state.isPassportIdValid && this.state.isPassportSeriesValid) {
             await axios.post(url, resident, config)
@@ -144,6 +148,7 @@ export default class AddBankBook extends Component {
             isInnValid: true,
             isAllFieldsFilled: true
         })
+        this.creationDate = ""
         this.additionalInfo = ""
         this.address = ""
         this.inn = ""
@@ -171,7 +176,7 @@ export default class AddBankBook extends Component {
                     <h2>Общие данные</h2>
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
+                            <span className="input-group-text" id="basic-addon1">Обязательно</span>
                         </div>
                         <input onChange={e => this.name = e.target.value} name='name' placeholder='Номер лицевого счета' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
@@ -214,7 +219,7 @@ export default class AddBankBook extends Component {
                         <input type="date" onChange={e => this.birthDate = e.target.value} name='birthDate' placeholder='Дата рождения' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
                     <div className="mb-3">
-                        <Select placeholder="Пол"
+                        <Select placeholder="Пол (Обязательное поле)"
                             onChange={e=>this.selectGender(e)}
                             options={options}
 
@@ -222,7 +227,7 @@ export default class AddBankBook extends Component {
                     </div>
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
+                            <span className="input-group-text" id="basic-addon1">Обязательно</span>
                         </div>
                         <input onChange={e => this.name1 = e.target.value} name='name1' placeholder='ФИО' className="form-control" aria-describedby="basic-addon1"/>
                     </div>

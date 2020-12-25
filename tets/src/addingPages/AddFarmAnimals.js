@@ -5,6 +5,10 @@ import {AddFarmAnimalsPath, GetFarmAnimalsTypesPath, LoginPath} from "../helpers
 import axios from "axios";
 import SuccessOrNotInformation from "../errors/SuccessOrNotInformation";
 
+function isNumeric(value) {
+    return /^-{0,1}\d+$/.test(value);
+}
+
 export default class AddFarmAnimals extends Component {
 
     state = {
@@ -94,6 +98,14 @@ export default class AddFarmAnimals extends Component {
         };
 
         let url = AddFarmAnimalsPath
+
+        if(!isNumeric(this.value)) {
+            console.log("!!!!!   Количество должно быть int")
+            this.setState({
+                isInvalid: true
+            })
+            return;
+        }
 
         const req = {
             bankBookName: this.props.match.params.bankBookName,
