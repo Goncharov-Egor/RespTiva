@@ -74,6 +74,7 @@ export default class HouseholdBook extends Component {
                                     <small><button onClick={e => this.openButtonClicked(e, index)} type="submit" className="btn btn-outline-success" >Открыть</button></small>
                                 </div>
                                 <p className="mb-1">Название кожууна: {empl.kozhuunName}</p>
+                                <p className="mb-1">Название сумона: {empl.villageName}</p>
                                 <small>Имя создателя: {empl.creatorName}</small>
                             </a>)
                           return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>
