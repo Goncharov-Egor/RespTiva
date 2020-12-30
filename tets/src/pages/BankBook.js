@@ -75,10 +75,11 @@ export default class BankBook extends Component {
                         return(<a href="#" className="list-group-item list-group-item-action"
                                   aria-current="true">
                             <div className="d-flex w-100 justify-content-between">
-                                <h5 className="mb-1">{index + 1}. {book.name}</h5>
+                                <h5 className="mb-1">{index + 1}. {book.mainFio}</h5>
                                 <small><button onClick={e => this.openButtonClicked(e, index)} type="submit" className="btn btn-outline-success" >Открыть</button></small>
                             </div>
                             <p className="mb-1">Создатель: {book.creatorName}</p>
+                            <p className="mb-1">Сумон: {book.village}</p>
                             <small>Дата создания: {book.creationDate}</small>
                         </a>)
                        // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>
