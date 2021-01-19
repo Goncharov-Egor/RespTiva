@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {Form} from "react-bootstrap";
-import {GetFarmAnimalsPath, GetHouseHoldBooksPath, GetLandsPath, GetResidentsPath} from "../helpers/Path";
+import {BasePath, GetFarmAnimalsPath, GetHouseHoldBooksPath, GetLandsPath, GetResidentsPath} from "../helpers/Path";
 import axios from "axios";
 import FarmAnimals from "../components/FarmAnimals";
 
@@ -88,18 +88,24 @@ export default class BankBookSpecification extends Component {
         this.props.history.push({pathname : '/AddFarmAnimals/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName })
     }
 
+    onPrintButtonClicked = (e) => {
+        this.props.history.push({pathname : "https://google.com"})
+    }
+
     render() {
         if(!this.state.isLoaded) {
             return (
                 <h1>Загрузка</h1>
             )
         }
+        const printPath = BasePath + "print/bank_book?kozhuunName=" + this.props.match.params.kozhuunName + "&bankBookName=" + this.props.match.params.bankBookName + "&householdBookName=" + this.props.match.params.householdBookName
         return (
             <Fragment>
                 <Form>
-                    <h1>{this.props.match.params.bankBookName}</h1>
+                    <h1>{this.props.match.params.bankBookName}.</h1>
                 </Form>
                 <Form>
+                    <a className="App-link" href={printPath} target="_blank">Распечатать информацию</a>
                     <h2>-</h2>
                     <h2>Члены хозяйства</h2>
                     <ul className="list-group">
