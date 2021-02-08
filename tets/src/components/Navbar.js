@@ -48,6 +48,11 @@ export default class Navbar extends Component {
                                 Реестр похозяйственных книг
                             </NavLink>
                         </li>
+                        <form className="form-inline my-2 my-lg-0" style={{position: "absolute", top: 10, right: 10,}}>
+                            <input className="form-control mr-sm-2" type="search"
+                                   aria-label="Search"/>
+                                <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                        </form>
                         <button className="btn btn-primary" onClick={e => this.logoutButtonPressed(e)}>Выйти</button>
                     </ul>
                 </nav>
@@ -74,7 +79,12 @@ export default class Navbar extends Component {
                             Авторизация
                         </NavLink>
                     </li>
+
                 </ul>
+                <form className="form-inline my-2 my-lg-0" style={{position: "absolute", top: 10, right: 10,}}>
+                    <input className="form-control mr-sm-2" type="search"  aria-label="Search"/>
+                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                </form>
             </nav>
 
         )

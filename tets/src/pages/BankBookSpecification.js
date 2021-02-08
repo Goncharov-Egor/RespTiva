@@ -1,13 +1,21 @@
 import React, {Component, Fragment} from "react";
 import {Form} from "react-bootstrap";
-import {BasePath, GetFarmAnimalsPath, GetHouseHoldBooksPath, GetLandsPath, GetResidentsPath} from "../helpers/Path";
+import {
+    BasePath,
+    GetFarmAnimalsPath,
+    GetHouseHoldBooksPath,
+    GetLandsPath,
+    GetResidentsPath,
+    GetTransportPath
+} from "../helpers/Path";
 import axios from "axios";
 import FarmAnimals from "../components/FarmAnimals";
 
 export default class BankBookSpecification extends Component {
 
     state = {
-        animals: []
+        animals: [],
+        transport: []
     }
 
     componentDidMount = async () => {
@@ -56,6 +64,15 @@ export default class BankBookSpecification extends Component {
             //console.log(Users)
             this.setState({
                 Lands: respnse.data.payload.lands,
+
+            })
+        })
+
+        url = GetTransportPath
+        await axios.post(url, BBook, config).then(response => {
+            console.log(response)
+            this.setState({
+                Transport: response.data.payload.transport,
                 isLoaded: true
             })
         })
@@ -88,6 +105,10 @@ export default class BankBookSpecification extends Component {
         this.props.history.push({pathname : '/AddFarmAnimals/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName })
     }
 
+    addTransportButtonPressed = (e) => {
+        this.props.history.push({pathname : '/AddTransport/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName })
+    }
+
     onPrintButtonClicked = (e) => {
         this.props.history.push({pathname : "https://google.com"})
     }
@@ -106,8 +127,7 @@ export default class BankBookSpecification extends Component {
                 </Form>
                 <Form>
                     <a className="App-link" href={printPath} target="_blank">Распечатать информацию</a>
-                    <h2>-</h2>
-                    <h2>Члены хозяйства</h2>
+                    <h2 style={{marginTop:100}}>Члены хозяйства</h2>
                     <ul className="list-group">
                         <button type="submit" className="btn btn-primary" onClick={e => this.addResidentButtonPressed(e)}>Добавить члена хозяйства</button>
                         {
@@ -116,6 +136,7 @@ export default class BankBookSpecification extends Component {
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
                                         <h5 className="mb-1">{index + 1}. {resident.name}</h5>
+                                        <small><button  type="submit" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}}>Выбыть</button></small>
                                         <small>{resident.relation}</small>
                                         <small>{resident.residenceMark}</small>
                                     </div>
@@ -129,8 +150,7 @@ export default class BankBookSpecification extends Component {
                     </ul>
                 </Form>
                 <Form>
-                    <h2>-</h2>
-                    <h2>Земельные участки</h2>
+                    <h2 style={{marginTop:100}}>Земельные участки</h2>
                     <ul className="list-group">
                         <button type="submit" className="btn btn-primary" onClick={e => this.addLand(e)}>Добавить земельный участок</button>
                         {
@@ -155,8 +175,7 @@ export default class BankBookSpecification extends Component {
 
                 </Form>
                 <Form>
-                    <h2>-</h2>
-                    <h2>Сельскохозяйственные животные, птицы и пчелы</h2>
+                    <h2 style={{marginTop:100}}>Сельскохозяйственные животные, птицы и пчелы</h2>
                     <ul className="list-group">
                         <button type="submit" className="btn btn-primary" onClick={e => this.addFarmAnimalPressed(e)}>Добавить</button>
                         {
@@ -181,6 +200,26 @@ export default class BankBookSpecification extends Component {
                                     <p className="mb-1">Количество: {animal.value}</p>
                                 </a>)
                                 // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>
+                            })
+
+                        }
+                    </ul>
+                </Form>
+                <Form>
+                    <h2 style={{marginTop:100}}>Техника</h2>
+                    <ul className="list-group">
+                        <button type="submit" className="btn btn-primary" onClick={e => this.addTransportButtonPressed(e)}>Добавить</button>
+                        {
+                            this.state.Transport.map((transport, index) => {
+                                return(<a href="#" className="list-group-item list-group-item-action"
+                                          aria-current="true">
+                                    <div className="d-flex w-100 justify-content-between">
+                                        <h5 className="mb-1">{index + 1}. {transport.name} <small
+                                            className="text-muted">({transport.year}) </small></h5>
+                                    </div>
+                                    <p className="mb-1">Количество: {transport.num}</p>
+                                    <p className="mb-1">Права: {transport.rights}</p>
+                                </a>)
                             })
 
                         }

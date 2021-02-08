@@ -47,7 +47,7 @@ export const Registration = () => {
     }
     return (
         <Fragment>
-            <h1>Регистарция</h1>
+            <h1>Регистрация</h1>
             <Form>
                 <Form.Group>
 
