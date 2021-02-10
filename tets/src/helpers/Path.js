@@ -25,3 +25,4 @@ export let AddFarmAnimalsPath = BasePath + "kozhuuns/household_books/bank_books/
 export let GetFarmAnimalsPath = BasePath + "kozhuuns/household_books/bank_books/farm_animals"
 export let AddTransportPath = BasePath + "kozhuuns/household_books/bank_books/transport/add"
 export let GetTransportPath = BasePath + "kozhuuns/household_books/bank_books/transport"
+export let CancelResizdentPath = BasePath + "kozhuuns/household_books/bank_books/residents/cancellation"

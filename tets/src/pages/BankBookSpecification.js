@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
-import {Form} from "react-bootstrap";
+import {Button, Form, Modal} from "react-bootstrap";
 import {
-    BasePath,
+    BasePath, CancelResizdentPath,
     GetFarmAnimalsPath,
     GetHouseHoldBooksPath,
     GetLandsPath,
@@ -10,12 +10,16 @@ import {
 } from "../helpers/Path";
 import axios from "axios";
 import FarmAnimals from "../components/FarmAnimals";
+import moment from "moment";
 
 export default class BankBookSpecification extends Component {
 
     state = {
         animals: [],
-        transport: []
+        transport: [],
+        mod: false,
+        willDeleteName: "",
+        willDeleteId: ""
     }
 
     componentDidMount = async () => {
@@ -84,12 +88,56 @@ export default class BankBookSpecification extends Component {
         })
     }
 
+    openModal = (e, id, index) => {
+        this.setState({
+            mod:true,
+            willDeleteId: id,
+            willDeleteName: this.state.Residents[index].name
+        })
+    }
+    closeModal = (e) => {
+        this.setState({
+            mod:false
+        })
+    }
+
+    onCancelButtonPressed = async (e) => {
+        let config = {
+            method: 'get',
+            url: CancelResizdentPath,
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : localStorage.getItem('token')
+            }
+        };
+
+        let date = ""
+
+        if(this.cancelDate) {
+            var getСreationDate = new Date(this.cancelDate)
+            date = moment(getСreationDate).format('DD.MM.YYYY')
+        }
+
+        const req = {
+            cancelDate: date,
+            cancelReason: this.cancelReason,
+            id: this.state.willDeleteId
+        }
+
+        console.log(req)
+
+        await axios.post(CancelResizdentPath, req, config).then(resp => {
+            console.log(resp)
+        })
+        window.location.reload()
+    }
 
     addResidentButtonPressed = (e) => {
         this.props.history.push({pathname : '/AddResident/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName})
     }
 
-    addLand = (e ) => {
+    addLand = (e) => {
         this.props.history.push({pathname : '/AddLand/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName } )
     }
 
@@ -125,6 +173,18 @@ export default class BankBookSpecification extends Component {
                 <Form>
                     <h1>{this.props.match.params.bankBookName}.</h1>
                 </Form>
+                <Modal show={this.state.mod} onHide={e => this.closeModal(e)}>
+                    <Modal.Header closeButton>
+                        <h4>{this.state.willDeleteName}</h4>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input placeholder="Причина выбытия" onChange={e => this.cancelReason = e.target.value} className="form-control" aria-describedby="basic-addon1"/>
+                        <input type="date" onChange={e => this.cancelDate = e.target.value} name='issueDate' placeholder='Дата выбытия' className="form-control" aria-describedby="basic-addon1" style={{marginTop: 20}}/>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button  type="button" className="btn btn-outline-danger" onClick={e => this.onCancelButtonPressed(e)}>Выбыть</button>
+                    </Modal.Footer>
+                </Modal>
                 <Form>
                     <a className="App-link" href={printPath} target="_blank">Распечатать информацию</a>
                     <h2 style={{marginTop:100}}>Члены хозяйства</h2>
@@ -132,11 +192,25 @@ export default class BankBookSpecification extends Component {
                         <button type="submit" className="btn btn-primary" onClick={e => this.addResidentButtonPressed(e)}>Добавить члена хозяйства</button>
                         {
                             this.state.Residents.map((resident, index) => {
+                                if(resident.cancelReason || resident.cancelDate) {
+                                    return(<a href="#" className="list-group-item list-group-item-action"
+                                              aria-current="true">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>{index + 1}. {resident.name}</h5>
+                                            <small>{resident.relation}</small>
+                                            <small>{resident.residenceMark}</small>
+                                        </div>
+                                        <p className="mb-1">Дата рождения: {resident.birthDate}</p>
+                                        <small>Пол: {resident.gender}</small>
+                                        <p style={{marginTop: 20, textDecoration: 'black'}}>Дата выбытия: {resident.cancelDate}</p>
+                                        <p style={{marginTop: 1}}>Причина выбытия: {resident.cancelReason}</p>
+                                    </a>)
+                                }
                                 return(<a href="#" className="list-group-item list-group-item-action"
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
                                         <h5 className="mb-1">{index + 1}. {resident.name}</h5>
-                                        <small><button  type="submit" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}}>Выбыть</button></small>
+                                        <small><button  type="button" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModal(e, resident.id, index)}>Выбыть</button></small>
                                         <small>{resident.relation}</small>
                                         <small>{resident.residenceMark}</small>
                                     </div>
