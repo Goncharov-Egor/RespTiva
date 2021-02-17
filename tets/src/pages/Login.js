@@ -47,6 +47,7 @@ export default class Login extends Component {
                 console.log(err)
             })
 
+        window.location.reload()
     }
 
     componentWillMount() {
