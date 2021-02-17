@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {
+    AddFarmAnimalsPath,
     BasePath, CancelResizdentPath,
     GetFarmAnimalsPath,
     GetHouseHoldBooksPath,
@@ -11,6 +12,7 @@ import {
 import axios from "axios";
 import FarmAnimals from "../components/FarmAnimals";
 import moment from "moment";
+import AddFarmAnimals from "../addingPages/AddFarmAnimals";
 
 export default class BankBookSpecification extends Component {
 
@@ -19,7 +21,10 @@ export default class BankBookSpecification extends Component {
         transport: [],
         mod: false,
         willDeleteName: "",
-        willDeleteId: ""
+        willDeleteId: "",
+        animalsMod: false,
+        pet: "",
+        valueOfPets: ""
     }
 
     componentDidMount = async () => {
@@ -101,6 +106,48 @@ export default class BankBookSpecification extends Component {
         })
     }
 
+    openModalAnimals = (e, name, value) => {
+        this.setState({
+            animalsMod: true,
+            pet: name,
+            valueOfPets: value
+        })
+    }
+
+    closeModalAnimals = (e) => {
+        this.setState({
+            animalsMod: false
+        })
+    }
+
+    onAnimalButtonPressed = async (e) => {
+        let config = {
+            method: 'get',
+            url: CancelResizdentPath,
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : localStorage.getItem('token')
+            }
+        };
+
+        const req = {
+            animals: [{
+                name: this.state.pet,
+                value: this.animalValue
+            }],
+            householdBookName: this.props.match.params.householdBookName,
+            kozhuunName: this.props.match.params.kozhuunName,
+            bankBookName: this.props.match.params.bankBookName
+        }
+
+        await axios.post(AddFarmAnimalsPath, req, config).then(resp => {
+            console.log(resp)
+        })
+
+        window.location.reload()
+    }
+
     onCancelButtonPressed = async (e) => {
         let config = {
             method: 'get',
@@ -173,6 +220,7 @@ export default class BankBookSpecification extends Component {
                 <Form>
                     <h1>{this.props.match.params.bankBookName}.</h1>
                 </Form>
+
                 <Modal show={this.state.mod} onHide={e => this.closeModal(e)}>
                     <Modal.Header closeButton>
                         <h4>{this.state.willDeleteName}</h4>
@@ -185,6 +233,19 @@ export default class BankBookSpecification extends Component {
                         <button  type="button" className="btn btn-outline-danger" onClick={e => this.onCancelButtonPressed(e)}>Выбыть</button>
                     </Modal.Footer>
                 </Modal>
+
+                <Modal show={this.state.animalsMod} onHide={e => this.closeModalAnimals(e)}>
+                    <Modal.Header closeButton>
+                        <h4>{this.state.pet}</h4>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input placeholder="Новое количество" onChange={e => this.animalValue = e.target.value} className="form-control" aria-describedby="basic-addon1"/>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button  type="button" className="btn btn-outline-success" onClick={e => this.onAnimalButtonPressed(e)}>Изменить</button>
+                    </Modal.Footer>
+                </Modal>
+
                 <Form>
                     <a className="App-link" href={printPath} target="_blank">Распечатать информацию</a>
                     <h2 style={{marginTop:100}}>Члены хозяйства</h2>
@@ -261,6 +322,7 @@ export default class BankBookSpecification extends Component {
                                             <div className="d-flex w-100 justify-content-between">
                                                 <h5 className="mb-1">{index + 1}. {animal.name} </h5>
                                             </div>
+                                            <small><button  type="button" className="btn btn-outline-info" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModalAnimals(e, animal.name, animal.value)}>Изменить</button></small>
                                             <p className="mb-1">Количество: {animal.value}</p>
                                         </a>
                                     )
@@ -271,6 +333,8 @@ export default class BankBookSpecification extends Component {
                                         <h5 className="mb-1">{index + 1}. {animal.parentName} <small
                                             className="text-muted">{animal.name} </small></h5>
                                     </div>
+                                    <small><button  type="button" className="btn btn-outline-info" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModalAnimals(e, animal.name, animal.value)}>Изменить</button></small>
+
                                     <p className="mb-1">Количество: {animal.value}</p>
                                 </a>)
                                 // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>

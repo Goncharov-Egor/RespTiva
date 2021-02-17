@@ -51,7 +51,7 @@ export default class HouseholdBook extends Component {
         //console.log(this.state.HouseholdBooks[ind])
         //localStorage.setItem('HouseholdBook', this.state.HouseholdBooks[ind])
 
-        this.props.history.push({pathname: '/BankBook/' + this.state.HouseholdBooks[ind].name + '/' + this.state.HouseholdBooks[ind].kozhuunName,
+        this.props.history.push({pathname: '/BankBook/' + this.state.HouseholdBooks[ind].name + '/' + this.state.HouseholdBooks[ind].kozhuunName + '/' + this.state.HouseholdBooks[ind].villageName,
             state: JSON.stringify(this.state.HouseholdBooks[ind])})
         //window.open('/BankBook')
     }

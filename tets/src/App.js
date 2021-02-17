@@ -53,7 +53,7 @@ export default class App extends Component{
                         <Route path={'/users'} exact component={UsersList}/>
                         <Route path={'/HouseholdBooks'} exact component={HouseholdBook}/>
                         <Route path={'/AddHouseholdBook'} exact component={AddHouseholdBook}/>
-                        <Route path={'/BankBook/:householdBookName/:kozhuunName'} exact component={BankBook}/>
+                        <Route path={'/BankBook/:householdBookName/:kozhuunName/:villageName'} exact component={BankBook}/>
                         <Route path={'/AddBankBook/:householdBookName/:kozhuunName'} exact component={AddBankBook}/>
                         <Route path={'/BankBookSpecification/:householdBookName/:kozhuunName/:bankBookName'} exact component={BankBookSpecification}/>
                         <Route path={'/AddResident/:householdBookName/:kozhuunName/:bankBookName'} exact component={AddResident}/>
