@@ -259,7 +259,6 @@ export default class BankBookSpecification extends Component {
                                         <div className="d-flex w-100 justify-content-between">
                                             <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>{index + 1}. {resident.name}</h5>
                                             <small>{resident.relation}</small>
-                                            <small>{resident.residenceMark}</small>
                                         </div>
                                         <p className="mb-1">Дата рождения: {resident.birthDate}</p>
                                         <small>Пол: {resident.gender}</small>
@@ -273,7 +272,6 @@ export default class BankBookSpecification extends Component {
                                         <h5 className="mb-1">{index + 1}. {resident.name}</h5>
                                         <small><button  type="button" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModal(e, resident.id, index)}>Выбыть</button></small>
                                         <small>{resident.relation}</small>
-                                        <small>{resident.residenceMark}</small>
                                     </div>
                                     <p className="mb-1">Дата рождения: {resident.birthDate}</p>
                                     <small>Пол: {resident.gender}</small>
