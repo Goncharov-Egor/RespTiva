@@ -27,3 +27,5 @@ export let AddTransportPath = BasePath + "kozhuuns/household_books/bank_books/tr
 export let GetTransportPath = BasePath + "kozhuuns/household_books/bank_books/transport"
 export let CancelResizdentPath = BasePath + "kozhuuns/household_books/bank_books/residents/cancellation"
 export let CloseBankBook = BasePath + "kozhuuns/household_books/bank_books/close"
+export let CreateLandCategoryPath = BasePath + "land_category/create"
+export let GetLandCategory = BasePath + "land_category"
