@@ -193,7 +193,7 @@ export default class BankBookSpecification extends Component {
     }
 
     addAgricultureTypeButtonPressed = (e, index) => {
-        this.props.history.push({pathname : '/AddAgriculture/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName+ '/' + this.state.Lands[index].cadastralNumber})
+        this.props.history.push( {pathname : '/AddAgriculture/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName+ '/' + this.state.Lands[index].cadastralNumber} )
     }
 
     addFarmAnimalPressed = (e) => {
@@ -214,7 +214,8 @@ export default class BankBookSpecification extends Component {
                 <h1>Загрузка</h1>
             )
         }
-        const printPath = BasePath + "print/bank_book?kozhuunName=" + this.props.match.params.kozhuunName + "&bankBookName=" + this.props.match.params.bankBookName + "&householdBookName=" + this.props.match.params.householdBookName
+        const printLandsPath = BasePath + "print/bank_book?kozhuunName=" + this.props.match.params.kozhuunName + "&bankBookName=" + this.props.match.params.bankBookName + "&householdBookName=" + this.props.match.params.householdBookName
+        const printHHBookPath = BasePath + "print/bank_book/summary?kozhuunName=" + this.props.match.params.kozhuunName + "&bankBookName=" + this.props.match.params.bankBookName + "&householdBookName=" + this.props.match.params.householdBookName
         return (
             <Fragment>
                 <Form>
@@ -247,7 +248,12 @@ export default class BankBookSpecification extends Component {
                 </Modal>
 
                 <Form>
-                    <a className="App-link" href={printPath} target="_blank">Распечатать информацию</a>
+                    <div className="mb-3">
+                        <a className="App-link" href={printLandsPath} target="_blank">Печать прав на земельные участки</a>
+                    </div>
+                    <div className="mb-3">
+                        <a style={{marginTop:20}} className="App-link" href={printHHBookPath} target="_blank">Выписка из похозяйственной книги</a>
+                    </div>
                     <h2 style={{marginTop:100}}>Члены хозяйства</h2>
                     <ul className="list-group">
                         <button type="submit" className="btn btn-primary" onClick={e => this.addResidentButtonPressed(e)}>Добавить члена хозяйства</button>
