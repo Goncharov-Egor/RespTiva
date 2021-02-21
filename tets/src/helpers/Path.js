@@ -29,3 +29,5 @@ export let CancelResizdentPath = BasePath + "kozhuuns/household_books/bank_books
 export let CloseBankBook = BasePath + "kozhuuns/household_books/bank_books/close"
 export let CreateLandCategoryPath = BasePath + "land_category/create"
 export let GetLandCategory = BasePath + "land_category"
+export let GetUsersProfilePath = BasePath + "users/profile"
+export let SearchPath = BasePath + "find/bank_books"

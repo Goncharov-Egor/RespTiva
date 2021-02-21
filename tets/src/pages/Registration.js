@@ -45,6 +45,13 @@ export const Registration = () => {
                 console.log(response.data)
             })
     }
+    if(localStorage.getItem('role') !== "ADMIN") {
+        return (
+            <h3>
+                Недостаточно прав
+            </h3>
+        )
+    }
     return (
         <Fragment>
             <h1>Регистрация</h1>

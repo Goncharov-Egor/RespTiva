@@ -19,6 +19,7 @@ import AddAgriculture from "./addingPages/AddAgriculture";
 import AddFarmAnimals from "./addingPages/AddFarmAnimals";
 import AnimalTypesCreator from "./CreatePages/AnimalTypesCreator";
 import AddTransport from "./addingPages/AddTransport";
+import Search from "./pages/Search";
 
 export default class App extends Component{
     componentDidMount() {
@@ -65,6 +66,7 @@ export default class App extends Component{
                         <Route path={'/AddFarmAnimals/:householdBookName/:kozhuunName/:bankBookName'} exact component={AddFarmAnimals}/>
                         <Route path={'/AnimalTypesCreator'} exact component={AnimalTypesCreator}/>
                         <Route path={'/AddTransport/:householdBookName/:kozhuunName/:bankBookName'} exact component={AddTransport}/>
+                        <Route path={'/Search/:searchText'} exact component={Search}/>
 
                     </Switch>
                 </div>

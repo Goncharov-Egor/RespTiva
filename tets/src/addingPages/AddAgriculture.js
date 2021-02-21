@@ -4,6 +4,10 @@ import axios from "axios";
 
 export default class AddAgriculture extends Component {
 
+    state = {
+        agricultures: []
+    }
+
     componentDidMount = async () => {
         let config = {
             method: 'post',
@@ -40,9 +44,11 @@ export default class AddAgriculture extends Component {
         await axios.post(url, req, config).then(respnse => {
             console.log(respnse)
             //console.log(Users)
-            this.setState({
-                agricultures: respnse.data.payload.agricultures
-            })
+            if(respnse.data.payload) {
+                this.setState({
+                    agricultures: respnse.data.payload.agricultures
+                })
+            }
             console.log(respnse)
         })
 

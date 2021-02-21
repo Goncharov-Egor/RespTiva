@@ -1,7 +1,7 @@
 import React, {Fragment, useState, Component} from 'react';
 import {Dropdown, Form} from "react-bootstrap";
 import axios from "axios";
-import {LoginPath} from "../helpers/Path";
+import {CancelResizdentPath, GetUsersProfilePath, LoginPath} from "../helpers/Path";
 import {Redirect} from 'react-router-dom'
 import LoginError from '../errors/LoginError'
 
@@ -47,6 +47,21 @@ export default class Login extends Component {
                 console.log(err)
             })
 
+        config = {
+            method: 'get',
+            url: GetUsersProfilePath,
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : localStorage.getItem('token')
+            }
+        };
+        await axios.get(GetUsersProfilePath, config).then(resp => {
+            if(resp.data.success) {
+                localStorage.setItem('role', resp.data.payload.role)
+                localStorage.setItem('fio', resp.data.payload.fio)
+            }
+        })
         window.location.reload()
     }
 
@@ -67,7 +82,7 @@ export default class Login extends Component {
     render() {
         console.log("Render called")
         if(this.state.loggedIn) {
-            return (<Redirect to={'/'}/>)
+            return (<Redirect to={'/HouseholdBooks'}/>)
         }
         return (
             <Fragment>
