@@ -7,6 +7,7 @@ import Select from "react-select";
 import moment from 'moment'
 import AddHouseHoldBookError from "../errors/AddHouseHoldBookError";
 import Prompter from "../errors/Prompter";
+import SuccessOrNotInformation from "../errors/SuccessOrNotInformation";
 
 
 const options = [{ value: "Мужчина", label: "Мужчина" }, { value: "Женщина", label: "Женщина" }]
@@ -21,6 +22,9 @@ export default class AddBankBook extends Component {
 
     addButtonPressed = async (e) => {
 
+        this.setState({
+            isFirst: false
+        })
 
 
         if(this.creationDate !== "") {
@@ -44,17 +48,21 @@ export default class AddBankBook extends Component {
         this.setState({
             isInnValid: isVal
         })
-        let isPI = ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0)
-        let isPS = ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
+        let isPI = ((isNumeric(this.passportId) && (this.passportId.length === 6)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0)
+        let isPS = ((isNumeric(this.passportSeries) && (this.passportSeries.length === 4)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
 
         this.setState({
-            isPassportIdValid: ((isNumeric(this.passportId) && (this.passportId.length === 4)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0),
-            isPassportSeriesValid: ((isNumeric(this.passportSeries) && (this.passportSeries.length === 6)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0)
-
+            isPassportIdValid: ((isNumeric(this.passportId) && (this.passportId.length === 6)) || this.passportId === null || this.passportId === "" || this.passportId.length === 0),
+            isPassportSeriesValid: ((isNumeric(this.passportSeries) && (this.passportSeries.length === 4)) || this.passportSeries === null || this.passportSeries === "" || this.passportSeries.length === 0),
+            isValid: (this.state.isValid && isVal && isPI && isPS)
         })
-        console.log("aaaaaaaaa", isNumeric(this.inn), (this.inn.length === 12), isVal)
-        if(!(isVal && isPI && isPS && this.name !== "" && this.name !== null))
+        console.log(this.state.isValid, isVal, isPI, isPS)
+        if(!(isVal && isPI && isPS && this.name !== "" && this.name !== null)) {
+            this.setState({
+                isValid: false
+            })
             return
+        }
 
 
 
@@ -112,7 +120,11 @@ export default class AddBankBook extends Component {
             }]
         }
 
-        console.log(isNumeric(this.passportId), (this.passportId.length === 4))
+        this.setState({
+            isValid: this.state.isPassportIdValid && this.state.isPassportSeriesValid
+        })
+
+        console.log("aaaaaa", this.state.isPassportIdValid && this.state.isPassportSeriesValid)
 
         if(this.state.isPassportIdValid && this.state.isPassportSeriesValid) {
             await axios.post(url, resident, config)
@@ -146,7 +158,8 @@ export default class AddBankBook extends Component {
             isPassportIdValid: true,
             isPassportSeriesValid: true,
             isInnValid: true,
-            isAllFieldsFilled: true
+            isAllFieldsFilled: true,
+            isFirst: true
         })
         this.creationDate = ""
         this.additionalInfo = ""
@@ -245,29 +258,33 @@ export default class AddBankBook extends Component {
                         </div>
                         <input onChange={e => this.issuingAuthority = e.target.value} name='issuingAuthority' placeholder='Кем выдан паспорт' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
-                    <Prompter isInvalid={!this.state.isPassportIdValid} message="Неверно набран номер паспорта. Должно быть 4 цифры"/>
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1"></span>
-                        </div>
 
-                        <input onChange={e => this.passportId = e.target.value} name='passportId' placeholder='Серия паспорта' className="form-control" aria-describedby="basic-addon1"/>
-                    </div>
-                    <Prompter isInvalid={!this.state.isPassportSeriesValid} message="Неверно набрана серия паспорта. Должно быть 6 цифор"/>
 
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1"></span>
                         </div>
-                        <input onChange={e => this.passportSeries = e.target.value} name='passportSeries' placeholder='Номер паспорта' className="form-control" aria-describedby="basic-addon1"/>
+
+                        <input onChange={e => this.passportSeries = e.target.value} name='passportId' placeholder='Серия паспорта' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
+                    <Prompter isInvalid={!this.state.isPassportSeriesValid} message="Неверно набрана серия паспорта. Должно быть 4 цифры"/>
+
+
+
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1"></span>
+                        </div>
+                        <input onChange={e => this.passportId = e.target.value} name='passportSeries' placeholder='Номер паспорта' className="form-control" aria-describedby="basic-addon1"/>
+                    </div>
+                    <Prompter isInvalid={!this.state.isPassportIdValid} message="Неверно набран номер паспорта. Должно быть 6 цифр"/>
 
 
                 </Form.Group>
             </Form>
             <AddHouseHoldBookError isInvalid={!this.state.isValid} message={"Неверные данные"}/>
             <Prompter isInvalid={!this.state.isAllFieldsFilled} message="Все поля должны быть заполнены"/>
-
+            <SuccessOrNotInformation isFirst={this.state.isFirst} isInvalid={!this.state.isValid}/>
             <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить лицевой счет</button>
         </Fragment>)
     }

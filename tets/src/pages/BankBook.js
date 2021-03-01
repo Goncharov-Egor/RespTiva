@@ -147,11 +147,13 @@ export default class BankBook extends Component {
                                 <a href="#" className="list-group-item list-group-item-action"
                                        aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
-                                        <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>{index + 1}. {book.mainFio}</h5>
+                                        <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>{book.name}. {book.mainFio}</h5>
                                     </div>
                                     <p className="mb-1">Сумон: {this.props.match.params.villageName}</p>
 
                                     <small>Дата создания: {book.creationDate}</small>
+                                    <p className="mb-1">Адрес: {book.address}</p>
+                                    <p className="mb-1">Доп. информация: {book.additionalInfo}</p>
                                     <p className="mb-1">Причина закрытия: {book.closingReason}</p>
                                     <p className="mb-1">Дата закрытия: {book.closingDate}</p>
                                 </a>
@@ -161,11 +163,13 @@ export default class BankBook extends Component {
                         return(<a href="#" className="list-group-item list-group-item-action"
                                   aria-current="true">
                             <div className="d-flex w-100 justify-content-between">
-                                <h5 className="mb-1">{index + 1}. {book.mainFio}</h5>
+                                <h5 className="mb-1">{book.name}. {book.mainFio}</h5>
                                 <small><button onClick={e => this.openButtonClicked(e, index)} type="submit" className="btn btn-outline-success" style={{position: "absolute", top: 10, right: 150,}}>Открыть</button></small>
                                 <small><button  type="button" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModal(e, index)}>Закрыть ЛС</button></small>
                             </div>
                             <p className="mb-1">Сумон: {this.props.match.params.villageName}</p>
+                            <p className="mb-1">Адрес: {book.address}</p>
+                            <p className="mb-1">Доп. информация: {book.additionalInfo}</p>
                             <small>Дата создания: {book.creationDate}</small>
                         </a>)
                        // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>

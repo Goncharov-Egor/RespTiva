@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {
     AddFarmAnimalsPath,
-    BasePath, CancelResizdentPath,
+    BasePath, CancelResizdentPath, GetBankBookInfo,
     GetFarmAnimalsPath,
     GetHouseHoldBooksPath,
     GetLandsPath,
@@ -24,7 +24,13 @@ export default class BankBookSpecification extends Component {
         willDeleteId: "",
         animalsMod: false,
         pet: "",
-        valueOfPets: ""
+        valueOfPets: "",
+        bankBook: {},
+        issueDate: null,
+        issuingAuthority: "",
+        passportId: "",
+        passportSeries: "",
+        passport: null
     }
 
     componentDidMount = async () => {
@@ -53,6 +59,23 @@ export default class BankBookSpecification extends Component {
             //console.log(Users)
             this.setState({
                 Residents: respnse.data.payload.residents,
+            })
+
+            respnse.data.payload.residents.map(resident => {
+                if(resident.relation){ } else {
+                    this.setState({
+                        issueDate: resident.passport.issueDate,
+                        issuingAuthority: resident.passport.issuingAuthority,
+                        passportId: resident.passport.passportId,
+                        passportSeries: resident.passport.passportSeries,
+                    })
+                    if(this.state.issueDate && this.state.issueDate !== "") {
+                        this.setState({
+                            passport: "Паспорт выдан " + this.state.issueDate + ", в " + this.state.issuingAuthority + ", "
+                                + this.state.passportSeries + " " + this.state.passportId + " "
+                        })
+                    }
+                }
             })
         })
 
@@ -84,6 +107,14 @@ export default class BankBookSpecification extends Component {
                 Transport: response.data.payload.transport,
                 isLoaded: true
             })
+        })
+
+        await axios.post(GetBankBookInfo, BBook, config).then(resp => {
+            this.setState( {
+                bankBook: resp.data.payload
+            })
+        }).catch(err => {
+            console.log(err)
         })
     }
 
@@ -216,10 +247,16 @@ export default class BankBookSpecification extends Component {
         }
         const printLandsPath = BasePath + "print/bank_book?kozhuunName=" + this.props.match.params.kozhuunName + "&bankBookName=" + this.props.match.params.bankBookName + "&householdBookName=" + this.props.match.params.householdBookName
         const printHHBookPath = BasePath + "print/bank_book/summary?kozhuunName=" + this.props.match.params.kozhuunName + "&bankBookName=" + this.props.match.params.bankBookName + "&householdBookName=" + this.props.match.params.householdBookName
+        const headString = this.state.bankBook.mainFio + (this.state.passport || this.state.bankBook.address || this.state.bankBook.inn || this.state.bankBook.additionalInfo ? "," : "")
+        console.log(headString)
         return (
             <Fragment>
                 <Form>
-                    <h1>{this.props.match.params.bankBookName}.</h1>
+                    <h1>{(headString !== "undefined," && headString !== "undefined") ? headString : ""}</h1>
+                    <h4>{this.state.passport}</h4>
+                    <h2>{this.state.bankBook.address}</h2>
+                    <h3>{this.state.bankBook.inn ? "ИНН: " + this.state.bankBook.inn : ""}</h3>
+                    <h5>{this.state.bankBook.additionalInfo ? "Дополнительная информация: " + this.state.bankBook.additionalInfo : ""}</h5>
                 </Form>
 
                 <Modal show={this.state.mod} onHide={e => this.closeModal(e)}>
@@ -248,7 +285,7 @@ export default class BankBookSpecification extends Component {
                 </Modal>
 
                 <Form>
-                    <div className="mb-3">
+                    <div className="mb-3" style={{marginTop: 30}}>
                         <a className="App-link" href={printLandsPath} target="_blank">Печать прав на земельные участки</a>
                     </div>
                     <div className="mb-3">
@@ -264,7 +301,7 @@ export default class BankBookSpecification extends Component {
                                               aria-current="true">
                                         <div className="d-flex w-100 justify-content-between">
                                             <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>{index + 1}. {resident.name}</h5>
-                                            <small>{resident.relation}</small>
+                                            <h7>{resident.relation}</h7>
                                         </div>
                                         <p className="mb-1">Дата рождения: {resident.birthDate}</p>
                                         <small>Пол: {resident.gender}</small>
@@ -276,8 +313,9 @@ export default class BankBookSpecification extends Component {
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
                                         <h5 className="mb-1">{index + 1}. {resident.name}</h5>
+                                        <h7>{resident.relation}</h7>
                                         <small><button  type="button" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModal(e, resident.id, index)}>Выбыть</button></small>
-                                        <small>{resident.relation}</small>
+
                                     </div>
                                     <p className="mb-1">Дата рождения: {resident.birthDate}</p>
                                     <small>Пол: {resident.gender}</small>

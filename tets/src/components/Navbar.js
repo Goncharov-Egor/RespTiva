@@ -5,7 +5,9 @@ import {GetUsersProfilePath} from "../helpers/Path";
 
 export default class Navbar extends Component {
 
-    state = {};
+    state = {
+        searchText: ""
+    };
 
     componentDidMount = async () => {
         console.log(localStorage.getItem('token'))
@@ -45,9 +47,23 @@ export default class Navbar extends Component {
         //this.props.history.push({pathname:'/'})
     }
 
+    searchKeyPressed = (e) => {
+        //e.preventDefault();
+        console.log(e.key)
+        console.log(this.state.searchText)
+
+        if(e.key === 'Enter') {
+            return
+            //window.open("/Search/" + this.state.searchText)
+            //this.props.history.push({path: "/Search/" + this.state.searchText})
+            //this.onSearchButtonClicked()
+        }
+    }
+
     onSearchButtonClicked = (e) => {
-        console.log(this.searchText)
-        window.location.href="/Search/" + this.searchText
+        e.preventDefault();
+        console.log(this.state.searchText)
+        window.location.href="/Search/" + this.state.searchText
     }
 
     render() {
@@ -61,7 +77,7 @@ export default class Navbar extends Component {
 
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <a className="nav-link disabled" style={{color: "#211b1b"}} href="#" tabIndex="-1" aria-disabled="true">{this.state.fio}</a>
+                                <a className="nav-link disabled" style={{color: "#ffc107"}} href="#" tabIndex="-1" aria-disabled="true">{this.state.fio}</a>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/users/registration">
@@ -74,8 +90,8 @@ export default class Navbar extends Component {
                                 </NavLink>
                             </li>
                             <form className="form-inline my-2 my-lg-0" style={{position: "absolute", top: 10, right: 10,}}>
-                                <input className="form-control mr-sm-2" type="search"
-                                       aria-label="Search" onChange={e => this.searchText = e.target.value}/>
+                                <input className="form-control mr-sm-2"
+                                       aria-label="Search" onChange={e => this.setState({searchText: e.target.value})} onKeyPress={e => this.searchKeyPressed(e)}/>
                                     <button className="btn btn-success " type="button" onClick={e => this.onSearchButtonClicked(e)}>Поиск</button>
                             </form>
                             <button className="btn btn-primary" onClick={e => this.logoutButtonPressed(e)}>Выйти</button>
@@ -91,7 +107,7 @@ export default class Navbar extends Component {
 
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <a className="nav-link disabled" style={{color: "#211b1b"}} href="#" tabIndex="-1" aria-disabled="true">{this.state.fio}</a>
+                                <a className="nav-link disabled" style={{color: "#ffc107"}} href="#" tabIndex="-1" aria-disabled="true">{this.state.fio}</a>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/HouseholdBooks">
@@ -99,8 +115,8 @@ export default class Navbar extends Component {
                                 </NavLink>
                             </li>
                             <form className="form-inline my-2 my-lg-0" style={{position: "absolute", top: 10, right: 10,}}>
-                                <input className="form-control mr-sm-2" type="search"
-                                       aria-label="Search" onChange={e => this.searchText = e.target.value}/>
+                                <input className="form-control mr-sm-2"
+                                       aria-label="Search"  onChange={e => this.setState({searchText: e.target.value})} onKeyPress={e => this.searchKeyPressed(e)}/>
                                 <button className="btn btn-success" type="button" onClick={e => this.onSearchButtonClicked(e)}>Поиск</button>
                             </form>
                             <button className="btn btn-primary" onClick={e => this.logoutButtonPressed(e)}>Выйти</button>

@@ -12,6 +12,11 @@ import {Redirect} from "react-router-dom";
 import SuccessOrNotInformation from "../errors/SuccessOrNotInformation";
 import Select from "react-select";
 import moment from "moment";
+import Prompter from "../errors/Prompter";
+
+function isNumeric(value) {
+    return /^-{0,1}\d+$/.test(value);
+}
 
 export default class AddLand extends Component {
 
@@ -19,7 +24,8 @@ export default class AddLand extends Component {
         isInvalid: false,
         isFirst: true,
         landCategoriesOptions: [],
-        landCategories: []
+        landCategories: [],
+        isCadastralNumberValid: true
     }
 
     componentDidMount = async () => {
@@ -65,6 +71,28 @@ export default class AddLand extends Component {
         };
 
         let url = AddLandPath
+
+        if(!this.cadastralNumber) {
+            this.setState({
+                isCadastralNumberValid: false
+            })
+            return
+        }
+
+        const arr = this.cadastralNumber.split(":")
+        let isValidCN = true
+
+        arr.map(num => {
+            isValidCN = isValidCN && (arr.length === 4) && isNumeric(num)
+            console.log(isValidCN)
+        })
+
+        this.setState({
+            isCadastralNumberValid: isValidCN
+        })
+
+        if(!this.state.isCadastralNumberValid)
+            return
 
         let getBDate = new Date(this.documentEndDate)
         let endDate = moment(getBDate).format('DD.MM.YYYY')
@@ -181,6 +209,9 @@ export default class AddLand extends Component {
                             </div>
                             <input onChange={e => this.cadastralNumber = e.target.value} name='cadastralNumber' placeholder='Кадастровый номер участка' className="form-control" aria-describedby="basic-addon1" />
                         </div>
+
+                        <Prompter isInvalid={!this.state.isCadastralNumberValid} message="Неверный формат кадастрового номера"/>
+
 
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
