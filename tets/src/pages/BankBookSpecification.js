@@ -337,7 +337,7 @@ export default class BankBookSpecification extends Component {
                                     <div className="d-flex w-100 justify-content-between">
                                         <h5 className="mb-1">Участок №{index + 1}. Кадастровый номер: {land.cadastralNumber}</h5>
                                         <small><button type="submit" onClick={e => this.addLandTypeButtonPressed(e, index)} className="btn btn-outline-info" >Площадь по виду земель</button>-
-                                            <button type="submit" onClick={e => this.addAgricultureTypeButtonPressed(e, index)} className="btn btn-outline-warning" >Площадь земли занятой культурами</button></small>
+                                            <button type="submit" onClick={e => this.addAgricultureTypeButtonPressed(e, index)} className="btn btn-outline-warning" >Площадь земли, занятой культурами</button></small>
                                     </div>
                                     <p className="mb-1">Документ: {land.document}</p>
                                     <p className="mb-1">Имя создателя: {land.creatorName}</p>

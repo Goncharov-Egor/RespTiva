@@ -142,11 +142,14 @@ export default class Search extends React.Component {
                                         <a href="#" className="list-group-item list-group-item-action"
                                            aria-current="true">
                                             <div className="d-flex w-100 justify-content-between">
-                                                <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>{index + 1}. {book.mainFio}</h5>
+                                                <h5 className="mb-1" style={{ textDecorationLine: 'line-through' }}>Книга {book.householdBookName}. {book.mainFio}</h5>
                                             </div>
 
                                             <small>Дата создания: {book.creationDate}</small>
+
+                                            <p className="mb-1">Кожуун: {book.kozhuunName}</p>
                                             <p className="mb-1">Адрес: {book.address}</p>
+                                            <p className="mb-1">ИНН: {book.inn}</p>
                                             <p className="mb-1">Доп. информация: {book.additionalInfo}</p>
                                             <p className="mb-1">Причина закрытия: {book.closingReason}</p>
                                             <p className="mb-1">Дата закрытия: {book.closingDate}</p>
@@ -157,13 +160,15 @@ export default class Search extends React.Component {
                                 return(<a href="#" className="list-group-item list-group-item-action"
                                           aria-current="true">
                                     <div className="d-flex w-100 justify-content-between">
-                                        <h5 className="mb-1">{index + 1}. {book.mainFio}</h5>
+                                        <h5 className="mb-1">Книга {book.householdBookName}. {book.mainFio}</h5>
                                         <small><button onClick={e => this.openButtonClicked(e, book)} type="submit" className="btn btn-outline-success" style={{position: "absolute", top: 10, right: 150,}}>Открыть</button></small>
                                         <small><button  type="button" className="btn btn-outline-danger" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModal(e, book)}>Закрыть ЛС</button></small>
 
                                     </div>
                                     <div>
+                                        <p className="mb-1">Кожуун: {book.kozhuunName}</p>
                                         <p className="mb-1">Адрес: {book.address}</p>
+                                        <p className="mb-1">ИНН: {book.inn}</p>
                                         <p className="mb-1">Доп. информация: {book.additionalInfo}</p>
                                     </div>
                                     <small>Дата создания: {book.creationDate}</small>

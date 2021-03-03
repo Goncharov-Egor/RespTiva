@@ -49,6 +49,9 @@ export default class AddLandType extends Component {
         this.setState({
             isFirst: false
         })
+
+        if(this.state.isSuccess)
+            window.location.reload()
     }
 
 
@@ -134,10 +137,10 @@ export default class AddLandType extends Component {
                 </h1>
             )
         }
-        if(this.state.isSuccess && !this.state.isFirst) {
-            let path = '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName
-            return(<Redirect to={path}/>)
-        }
+        // if(this.state.isSuccess && !this.state.isFirst) {
+        //     let path = '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName
+        //     return(<Redirect to={path}/>)
+        // }
         console.log(this.state.landTypes1)
         return (
                 <a>

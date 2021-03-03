@@ -2,6 +2,12 @@ import React, {Fragment} from 'react';
 
 export const Home = () => {
 
+    if(localStorage.getItem('token')) {
+        window.location.href='/HouseholdBooks'
+    } else {
+        window.location.href= '/login'
+    }
+
     if(localStorage.getItem('role')) {
         return (
             <Fragment>
@@ -9,7 +15,6 @@ export const Home = () => {
             </Fragment>
         )
     }
-
     return (
 
         <Fragment>

@@ -71,6 +71,12 @@ export default class Login extends Component {
         })
     }
 
+    componentDidMount() {
+        if(localStorage.getItem('token')) {
+            window.location.href= '/HouseholdBooks'
+        }
+    }
+
 
     setToken = token => {
         this.setState({

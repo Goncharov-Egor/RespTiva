@@ -16,6 +16,9 @@ export default class AddAgriculture extends Component {
         options2: [],
         name: "",
         parentName: "",
+        agr: [],
+        isSuccess: true,
+        isFirst: true
     }
 
     componentDidMount = async () => {
@@ -55,6 +58,37 @@ export default class AddAgriculture extends Component {
         this.setState({
             options: opt
         })
+
+        url = GetLandPath
+
+        const req = {
+            bankBookName: this.props.match.params.bankBookName,
+            householdBookName: this.props.match.params.householdBookName,
+            kozhuunName: this.props.match.params.kozhuunName,
+            cadastralNumber: this.props.match.params.cadastralNumber,
+        }
+
+        axios.post(url, req, config).then(resp => {
+
+            console.log(resp)
+
+            this.setState({
+                agr: resp.data.payload.agricultures
+            })
+        })
+
+        this.state.options.map(opt => {
+            console.log(opt)
+        })
+
+        let ind = -1
+        this.state.options.map((opt, index) => {
+            if(opt.value === "null")
+                ind = index
+        })
+        if (ind > -1) {
+            this.state.options.splice(ind, 1);
+        }
 
         this.setState({
             isApply: true
@@ -106,7 +140,7 @@ export default class AddAgriculture extends Component {
             kozhuunName: this.props.match.params.kozhuunName,
             land: this.props.match.params.cadastralNumber,
             agricultures: [{
-                agriculture: this.state.agriculturesTypeSelector,
+                agriculture: this.state.name,
                 value: this.value
             }]
         }
@@ -118,10 +152,17 @@ export default class AddAgriculture extends Component {
         await axios.post(url, req, config)
             .then(res => {
                 console.log(res)
+                this.setState({
+                    isSuccess: res.data.success,
+                    isFirst: false
+                })
             })
             .catch(err => {
                 console.log(err)
             })
+
+        if(this.state.isSuccess)
+            window.location.reload()
     }
 
     render() {
@@ -136,7 +177,7 @@ export default class AddAgriculture extends Component {
         if(this.state.isSecondField) {
             return (
                 <Fragment>
-                    <h1>Добавление сельскохозяйственных животных, птиц и пчел</h1>
+                    <h1>Добавление площади земли, занятой культурами</h1>
                     <Form>
                         <div>
                             <div className="mb-3">
@@ -161,16 +202,46 @@ export default class AddAgriculture extends Component {
                                 </div>
                                 <input onChange={e => this.value = e.target.value} name='value' placeholder='Количество' className="form-control" aria-describedby="basic-addon1"/>
                             </div>
-                            <SuccessOrNotInformation isFirst={this.state.isFirst} isInvalid={this.state.isInvalid}/>
                         </div>
                     </Form>
+
+                    <SuccessOrNotInformation isFirst={this.state.isFirst} isInvalid={!this.state.isSuccess}/>
+
                     <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить</button>
+
+                    <div style={{marginTop: 20}}>
+                        {
+                            this.state.agr.map((agr, index) => {
+                                if(agr.parentAgriculture) {
+                                    return (
+                                        <a href="#" className="list-group-item list-group-item-action"
+                                               aria-current="true">
+                                            <div className="d-flex w-100 justify-content-between">
+                                                <h5 className="mb-1">{agr.parentAgriculture} {agr.agriculture}</h5>
+                                            </div>
+                                            <p className="mb-1">Создатель: {agr.creatorName}</p>
+                                            <small>Количество: {agr.area}</small>
+                                        </a>
+                                    )
+                                }
+                                return(<a href="#" className="list-group-item list-group-item-action"
+                                          aria-current="true">
+                                    <div className="d-flex w-100 justify-content-between">
+                                        <h5 className="mb-1">{agr.agriculture}</h5>
+                                    </div>
+                                    <p className="mb-1">Создатель: {agr.creatorName}</p>
+                                    <small>Количество: {agr.area}</small>
+                                </a>)
+                            })
+
+                        }
+                    </div>
                 </Fragment>
             )
         }
         return (
             <Fragment>
-                <h1>Добавление сельскохозяйственных животных, птиц и пчел</h1>
+                <h1>Добавление площади земли, занятой культурами</h1>
                 <Form>
                     <div>
                         <div className="mb-3">
@@ -188,10 +259,40 @@ export default class AddAgriculture extends Component {
                             </div>
                             <input onChange={e => this.value = e.target.value} name='value' placeholder='Количество' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
-                        <SuccessOrNotInformation isFirst={this.state.isFirst} isInvalid={this.state.isInvalid}/>
                     </div>
                 </Form>
+
+                <SuccessOrNotInformation isFirst={this.state.isFirst} isInvalid={!this.state.isSuccess}/>
+
                 <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить</button>
+
+                <div style={{marginTop: 20}}>
+                    {
+                        this.state.agr.map((agr, index) => {
+                            if(agr.parentAgriculture) {
+                                return (
+                                    <a href="#" className="list-group-item list-group-item-action"
+                                       aria-current="true">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">{agr.parentAgriculture} {agr.agriculture}</h5>
+                                        </div>
+                                        <p className="mb-1">Создатель: {agr.creatorName}</p>
+                                        <small>Количество: {agr.area}</small>
+                                    </a>
+                                )
+                            }
+                            return(<a href="#" className="list-group-item list-group-item-action"
+                                      aria-current="true">
+                                <div className="d-flex w-100 justify-content-between">
+                                    <h5 className="mb-1">{agr.agriculture}</h5>
+                                </div>
+                                <p className="mb-1">Создатель: {agr.creatorName}</p>
+                                <small>Количество: {agr.area}</small>
+                            </a>)
+                        })
+
+                    }
+                </div>
             </Fragment>
         )
     }

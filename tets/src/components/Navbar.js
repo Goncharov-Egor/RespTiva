@@ -44,6 +44,7 @@ export default class Navbar extends Component {
             fio: null
         })
         window.location.reload()
+        window.location.href="/login"
         //this.props.history.push({pathname:'/'})
     }
 
