@@ -252,6 +252,7 @@ export default class BankBookSpecification extends Component {
         return (
             <Fragment>
                 <Form>
+                    <h4>Лицевой счет №{this.props.match.params.bankBookName}</h4>
                     <h1>{(headString !== "undefined," && headString !== "undefined") ? headString : ""}</h1>
                     <h4>{this.state.passport}</h4>
                     <h2>{this.state.bankBook.address}</h2>
@@ -285,9 +286,7 @@ export default class BankBookSpecification extends Component {
                 </Modal>
 
                 <Form>
-                    <div className="mb-3" style={{marginTop: 30}}>
-                        <a className="App-link" href={printLandsPath} target="_blank">Печать прав на земельные участки</a>
-                    </div>
+
                     <div className="mb-3">
                         <a style={{marginTop:20}} className="App-link" href={printHHBookPath} target="_blank">Выписка из похозяйственной книги</a>
                     </div>
@@ -342,7 +341,12 @@ export default class BankBookSpecification extends Component {
                                     <p className="mb-1">Документ: {land.document}</p>
                                     <p className="mb-1">Имя создателя: {land.creatorName}</p>
                                     <p className="mb-1">Категория: {land.landCategory}</p>
-                                    <small>Общая площадь: {land.totalArea}</small>
+                                    <small>Общая площадь: {land.totalArea}га</small>
+                                    <p>
+                                        <div className="mb-3" style={{marginTop: 15}}>
+                                            <a className="App-link" href={printLandsPath + "&cadastralNumber=" + land.cadastralNumber} target="_blank">Печать прав на земельный участок</a>
+                                        </div>
+                                    </p>
                                 </a>)
                                 // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>
                             })

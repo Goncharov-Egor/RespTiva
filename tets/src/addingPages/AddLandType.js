@@ -160,7 +160,7 @@ export default class AddLandType extends Component {
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon1"></span>
                             </div>
-                            <input onChange={e => this.value = e.target.value} placeholder='Площадь' className="form-control" aria-describedby="basic-addon1"/>
+                            <input onChange={e => this.value = e.target.value} placeholder='Площадь (га)' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
                         <AddHouseHoldBookError message="Неверные данные" isInvalid={!this.state.isSuccess}/>
                         <div className="input-group mb-3">
