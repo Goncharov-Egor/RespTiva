@@ -167,6 +167,7 @@ export default class Search extends React.Component {
                                     </div>
                                     <div>
                                         <p className="mb-1">Кожуун: {book.kozhuunName}</p>
+                                        <p className="mb-1">Сумон: {book.village}</p>
                                         <p className="mb-1">Адрес: {book.address}</p>
                                         <p className="mb-1">ИНН: {book.inn}</p>
                                         <p className="mb-1">Доп. информация: {book.additionalInfo}</p>

@@ -85,9 +85,13 @@ export default class HouseholdBook extends Component {
             console.log(err)
         })
 
+        // this.setState({
+        //     isDisabled: false
+        // })
+
         setTimeout(function() { this.setState({
             isDisabled: false
-        })}.bind(this), 2000)
+        })}.bind(this), 1000)
 
     }
 
