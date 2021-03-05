@@ -18,7 +18,9 @@ function isNumeric(value) {
 
 export default class AddBankBook extends Component {
 
-    state = {}
+    state = {
+        isNameValid: true
+    }
 
     addButtonPressed = async (e) => {
 
@@ -26,6 +28,10 @@ export default class AddBankBook extends Component {
             isFirst: false
         })
 
+        this.setState({
+            isNameValid: isNumeric(this.name)
+        })
+        if (!this.state.isNameValid) return
 
         if(this.creationDate !== "") {
             var getСreationDate = new Date(this.creationDate)
@@ -144,6 +150,11 @@ export default class AddBankBook extends Component {
                 })
             }
         }
+
+        if(this.state.isApply) {
+            this.props.history.push({pathname: '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.name})
+        }
+
     }
 
     selectGender = (e) => {
@@ -193,6 +204,8 @@ export default class AddBankBook extends Component {
                         </div>
                         <input onChange={e => this.name = e.target.value} name='name' placeholder='Номер лицевого счета' className="form-control" aria-describedby="basic-addon1"/>
                     </div>
+
+                    <Prompter isInvalid={!this.state.isNameValid} message="Счет должен быть из цифр"/>
 
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">

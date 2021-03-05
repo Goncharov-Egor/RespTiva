@@ -132,8 +132,8 @@ export default class Search extends React.Component {
                 </Modal>
 
                 <Form>
-                    <ul className="list-group">
-                        <button type="submit" className="btn btn-primary" onClick={e => this.addButtonClicked(e)} style={{marginTop:20}}>Добавить Лицевой счет</button>
+                    <h3>По запросу "{this.props.match.params.searchText}" найдено:</h3>
+                    <ul className="list-group" style={{marginTop: 40}}>
                         {
                             this.state.bankBooks.map((book, index) => {
 

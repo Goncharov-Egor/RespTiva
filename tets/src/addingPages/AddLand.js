@@ -86,6 +86,12 @@ export default class AddLand extends Component {
             isValidCN = isValidCN && (arr.length === 4) && isNumeric(num)
             console.log(isValidCN)
         })
+        this.setState({
+            isCadastralNumberValid: isValidCN
+        })
+
+        if(!isValidCN) return
+        isValidCN = isValidCN && (arr[0].length === 2) && (arr[1].length === 2) && (arr[2].length === 6) && (arr[3].length === 2)
 
         this.setState({
             isCadastralNumberValid: isValidCN
@@ -178,6 +184,7 @@ export default class AddLand extends Component {
         this.landCategory = e.value
     }
 
+
     render() {
         if(this.state.isApply) {
             let path = '/BankBookSpecification/' + this.props.match.params.householdBookName + '/' + this.props.match.params.kozhuunName + '/' + this.props.match.params.bankBookName
@@ -203,11 +210,17 @@ export default class AddLand extends Component {
                 <Form>
                     <Form.Group>
 
+
+
                         <div className="input-group mb-3" style={{marginTop: 30}}>
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon1"></span>
                             </div>
                             <input onChange={e => this.cadastralNumber = e.target.value} name='cadastralNumber' placeholder='Кадастровый номер участка' className="form-control" aria-describedby="basic-addon1" />
+                        </div>
+
+                        <div className="alert alert-info" role="alert">
+                            Кадастровый номер земельного участка в формате <strong>хх:хх:хххххх:хх</strong>
                         </div>
 
                         <Prompter isInvalid={!this.state.isCadastralNumberValid} message="Неверный формат кадастрового номера"/>
@@ -249,7 +262,7 @@ export default class AddLand extends Component {
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon1"></span>
                             </div>
-                            <input onChange={e => this.totalArea = e.target.value} name='totalArea' placeholder='Общую площадь всей земли, занятой посевами и посадками' className="form-control" aria-describedby="basic-addon1"/>
+                            <input onChange={e => this.totalArea = e.target.value} name='totalArea' placeholder='Общая площадь земельного участка, занятая посевами и посадками в гектарах' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
 
                     </Form.Group>
