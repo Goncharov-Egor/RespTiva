@@ -99,7 +99,19 @@ export default class HouseholdBook extends Component {
             return (
 
                <div>
-                   <button type="button" className="btn btn-secondary btn-sm" disabled={this.state.isDisabled} onClick={e => this.getExcelButtonPressed(e)}>Выписка Excel</button>
+                   <div className="mb-1" >
+                       {
+                           this.state.isDisabled ? <div className="spinner-border mb-1" role="status">
+                               <span className="sr-only">Loading...</span>
+                           </div> : <div/>
+                       }
+                   </div>
+
+                   <div className="mb-1" style={{marginTop: 15}}>
+                        <button type="button" className="btn btn-secondary btn-sm" disabled={this.state.isDisabled} onClick={e => this.getExcelButtonPressed(e)}>Выписка Excel</button>
+                   </div>
+
+
                     <ul className="list-group" style={{marginTop: 25}}>
                         <h1>Реестр похозяйственных книг</h1>
                         <button type="submit" className="btn btn-primary" onClick={e => this.addButtonClicked(e)}>Добавить книгу</button>
