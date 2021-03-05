@@ -5,6 +5,7 @@ import axios from "axios";
 import {Redirect} from "react-router-dom";
 import moment from "moment";
 import Select from "react-select";
+import SuccessOrNotInformation from "../errors/SuccessOrNotInformation";
 
 const genderOptions = [{ value: "Мужчина", label: "Мужчина" }, { value: "Женщина", label: "Женщина" }]
 const relationOptions = [{ value: "Сын", label: "Сын" }, { value: "Дочь", label: "Дочь" }
@@ -12,6 +13,11 @@ const relationOptions = [{ value: "Сын", label: "Сын" }, { value: "Доч�
     , { value: "Жена", label: "Жена" } , { value: "Мать", label: "Мать" }, { value: "Отец", label: "Отец" }, { value: "Патронат", label: "Патронат" }]
 
 export default class AddResident extends Component {
+
+    state = {
+        isSuccess: true,
+        isFirst: true
+    }
 
     componentDidMount() {
 
@@ -31,6 +37,14 @@ export default class AddResident extends Component {
         let getBDate = new Date(this.birthDate)
         let BDate = moment(getBDate).format('DD.MM.YYYY')
 
+        if(!this.state.relation) {
+            this.setState({
+                isSuccess: false,
+                isFirst: false
+            })
+            return
+        }
+
         let url = AddResidentPath
         const resident = {
             bankBookName: this.props.match.params.bankBookName,
@@ -48,6 +62,10 @@ export default class AddResident extends Component {
         await axios.post(url, resident, config)
             .then(res => {
                 console.log(res)
+                this.setState({
+                    isSuccess: res.data.success,
+                    isFirst: false
+                })
             })
             .catch(err => {
                 console.log(err)
@@ -123,7 +141,7 @@ export default class AddResident extends Component {
                             </div>
                             <input onChange={e => this.residenceMark = e.target.value} name='residenceMark' placeholder='Пометка о временном либо сезонном проживании (оставить пустым, если нет)' className="form-control" aria-describedby="basic-addon1"/>
                         </div>
-
+                        <SuccessOrNotInformation isInvalid={!this.state.isSuccess} isFirst={this.state.isFirst}/>
                     </Form.Group>
                 </Form>
                 <button type="submit" className="btn btn-primary" onClick={e => this.addButtonPressed(e)}>Добавить члена хозяйства</button>
