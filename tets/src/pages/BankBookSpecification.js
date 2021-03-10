@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {
-    AddFarmAnimalsPath,
+    AddFarmAnimalsPath, AddTransportPath,
     BasePath, CancelResizdentPath, GetBankBookInfo,
     GetFarmAnimalsPath,
     GetHouseHoldBooksPath,
@@ -30,7 +30,15 @@ export default class BankBookSpecification extends Component {
         issuingAuthority: "",
         passportId: "",
         passportSeries: "",
-        passport: null
+        passport: null,
+
+        transportMod: false,
+        transportName: "",
+        transportYear: "",
+        transportNum: "",
+        transportRights: "",
+        transportId: "",
+        successChangingTransport: true
     }
 
     componentDidMount = async () => {
@@ -151,6 +159,28 @@ export default class BankBookSpecification extends Component {
         })
     }
 
+    openModalTransport = (e, name, year, num, rights, id) => {
+        this.setState({
+            transportMod: true,
+            transportName: name,
+            transportYear: year,
+            transportNum: num,
+            transportRights: rights,
+            transportId: id
+        })
+    }
+
+    closeModalTransport = (e) => {
+        this.setState({
+            transportMod: false,
+            transportName: "",
+            transportYear: "",
+            transportNum: "",
+            transportRights: "",
+            transportId:  ""
+        })
+    }
+
     onAnimalButtonPressed = async (e) => {
         let config = {
             method: 'get',
@@ -209,6 +239,42 @@ export default class BankBookSpecification extends Component {
             console.log(resp)
         })
         window.location.reload()
+    }
+
+    onTransportChangeButtonPressed = async (e) => {
+        let config = {
+            method: 'get',
+            url: GetResidentsPath,
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : localStorage.getItem('token')
+            }
+        };
+
+        let url = AddTransportPath
+        const Transport = {
+            householdBookName: this.props.match.params.householdBookName,
+            kozhuunName: this.props.match.params.kozhuunName,
+            bankBookName: this.props.match.params.bankBookName,
+            id: this.state.transportId,
+            name: this.state.transportName,
+            num: this.state.transportNum,
+            rights: this.state.transportRights,
+            year: this.state.transportYear
+        }
+
+        await axios.post(url, Transport, config).then(resp => {
+            this.setState({
+                successChangingTransport: resp.data.success
+            })
+        })
+
+        if(this.state.successChangingTransport) {
+            this.closeModalTransport()
+            window.location.reload()
+        }
+
     }
 
     addResidentButtonPressed = (e) => {
@@ -389,6 +455,27 @@ export default class BankBookSpecification extends Component {
                         }
                     </ul>
                 </Form>
+                <Modal show={this.state.transportMod} onHide={e => this.closeModalTransport(e)}>
+                    <Modal.Header closeButton>
+                        <h3>Изменение техники</h3>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <input placeholder="Название" onChange={e => this.setState({transportName: e.target.value})} className="form-control" aria-describedby="basic-addon1" value={this.state.transportName}/>
+                        <input style={{marginTop:10}} placeholder="Количество" onChange={e => this.setState({transportNum: e.target.value})} className="form-control" aria-describedby="basic-addon1" value={this.state.transportNum}/>
+                        <input style={{marginTop:10}} className="mb-2" placeholder="Права" onChange={e => this.setState({transportRights: e.target.value})} className="form-control" aria-describedby="basic-addon1" value={this.state.transportRights}/>
+                        <input style={{marginTop:10}} className="mb-2" placeholder="Год" onChange={e => this.setState({transportYear: e.target.value})} className="form-control" aria-describedby="basic-addon1" value={this.state.transportYear}/>
+                        {
+                            this.state.successChangingTransport ? <div/> :
+                                <div style={{marginTop: 20}} className="alert alert-danger" role="alert">
+                                    Неверные данные
+                                </div>
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button  type="button" className="btn btn-outline-success" onClick={e => this.onTransportChangeButtonPressed(e)}>Изменить</button>
+                    </Modal.Footer>
+                </Modal>
+
                 <Form>
                     <h2 style={{marginTop:100}}>Техника</h2>
                     <ul className="list-group">
@@ -403,6 +490,7 @@ export default class BankBookSpecification extends Component {
                                     </div>
                                     <p className="mb-1">Количество: {transport.num}</p>
                                     <p className="mb-1">Права: {transport.rights}</p>
+                                    <small><button  type="button" className="btn btn-outline-info" style={{position: "absolute", top: 10, right: 10,}} onClick={e => this.openModalTransport(e, transport.name, transport.year, transport.num, transport.rights, transport.id)}>Изменить</button></small>
                                 </a>)
                             })
 
