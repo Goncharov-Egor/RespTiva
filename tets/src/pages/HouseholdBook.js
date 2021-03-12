@@ -95,6 +95,15 @@ export default class HouseholdBook extends Component {
 
     }
 
+    getInstruction = () => {
+        return (
+            <div className={'resume-container'} style={{marginTop: 30}}>
+                <div id={'resume-pdf'}>Посмотреть <a
+                    href={'/Инструкция пользователя.pdf'} target="_blank">инструкцию </a> по использованию программы</div>
+            </div>
+        )
+    }
+
     render() {
         if (this.state.isExpiredToken) {
             return <InvalidTokenError isInvalid={true}/>
@@ -114,6 +123,10 @@ export default class HouseholdBook extends Component {
                    <div className="mb-1" style={{marginTop: 15}}>
                         <button type="button" className="btn btn-secondary btn-sm" disabled={this.state.isDisabled} onClick={e => this.getExcelButtonPressed(e)}>Выписка Excel</button>
                    </div>
+
+                   {
+                       this.getInstruction()
+                   }
 
 
                     <ul className="list-group" style={{marginTop: 25}}>
