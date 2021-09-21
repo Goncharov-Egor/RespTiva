@@ -91,7 +91,7 @@ export default class AddLand extends Component {
         })
 
         if(!isValidCN) return
-        isValidCN = isValidCN && (arr[0].length === 2) && (arr[1].length === 2) && (arr[2].length === 6) && (arr[3].length === 2)
+        isValidCN = isValidCN && (arr[0].length === 2) && (arr[1].length === 2) && (arr[2].length === 6 || arr[2].length === 7) && (arr[3].length === 2 || arr[3].length === 3)
 
         this.setState({
             isCadastralNumberValid: isValidCN
@@ -220,7 +220,7 @@ export default class AddLand extends Component {
                         </div>
 
                         <div className="alert alert-info" role="alert">
-                            Кадастровый номер земельного участка в формате <strong>хх:хх:хххххх:хх</strong>
+                            Кадастровый номер земельного участка в формате <strong>хх:хх:хххххх(х):хх(х)</strong>
                         </div>
 
                         <Prompter isInvalid={!this.state.isCadastralNumberValid} message="Неверный формат кадастрового номера"/>

@@ -30,8 +30,16 @@ export default class BankBook extends Component {
         axios.post(url, HHBook, config).then((respnse) => {
             console.log(respnse)
             //console.log(Users)
+            if(respnse.data) {
+                if(respnse.data.payload) {
+                    if(respnse.data.payload.bankBooks) {
+                        this.setState({
+                            bankBooks: respnse.data.payload.bankBooks
+                        })
+                    }
+                }
+            }
             this.setState({
-                bankBooks: respnse.data.payload.bankBooks,
                 didLoad: true
             })
         })
