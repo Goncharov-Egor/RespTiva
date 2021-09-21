@@ -147,8 +147,7 @@ export default class BankBook extends Component {
                 <Form>
                 <ul className="list-group">
                 <button type="submit" className="btn btn-primary" onClick={e => this.addButtonClicked(e)} style={{marginTop:20}}>Добавить Лицевой счет</button>
-                {
-                    this.state.bankBooks.map((book, index) => {
+                {   this.state.bankBooks ? this.state.bankBooks.map((book, index) => {
 
                         if(book.closingDate || book.closingReason) {
                             return (
@@ -181,7 +180,7 @@ export default class BankBook extends Component {
                             <small>Дата создания: {book.creationDate}</small>
                         </a>)
                        // return <li className="list-group-item">{index}  {empl.creatorName} {empl.kozhuunName} {empl.name}</li>
-                    })
+                    }) : null
 
                 }
                 </ul>
